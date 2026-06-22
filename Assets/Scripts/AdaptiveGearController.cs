@@ -64,13 +64,13 @@ public class AdaptiveGearController : MonoBehaviour
             rectTransform.localScale = new Vector3(toothScaleFactor, toothScaleFactor, 1f);//scale it to the ScaleFactor
 
             //set it up in its position around the circle
-            var radians = (2 * MathF.PI / teeth) * i;                   //calculate how far around the circle to go
+            float radians = (2f * MathF.PI / (float)teeth) * i;                   //calculate how far around the circle to go
             //triangulate a vector3 in the appropriate direction
-            var vertical = Mathf.Sin(radians);                          //one side of the traingle,
-            var horizontal = Mathf.Cos(radians);                        //other side of the triangle,
+            float vertical = Mathf.Sin(radians);                          //one side of the traingle,
+            float horizontal = Mathf.Cos(radians);                        //other side of the triangle,
             Vector3 spawnDir = new Vector3(horizontal, vertical, 0);    //combine them to one normalized vector
             rectTransform.anchoredPosition = (spawnDir * radius);           //move in that direction, a radius amount
-            rectTransform.localRotation = Quaternion.Euler(0, 0, ((360 / teeth) * i) - 90); //rotate outwards (-90 is the direction the first tooth spawns in)
+            rectTransform.localRotation = Quaternion.Euler(0, 0, ((360f / (float)teeth) * i) - 90f); //rotate outwards (-90 is the direction the first tooth spawns in)
         }
     }
 
