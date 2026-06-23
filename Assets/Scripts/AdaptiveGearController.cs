@@ -11,9 +11,10 @@ public class AdaptiveGearController : MonoBehaviour
     public float Radius { get { return radius; } }
     private float radius;
 
-    private bool spins = true; //boolean storage for spinning (probably always true, w/e)
+    private bool spins = true; //boolean storage for spinning (probably always true, w/e, just in case)
     public float spinFactor = 10; //multiplies output speed, controlling speed of all gears
     public SpinDir spinDir = SpinDir.Clockwise;
+    public static float pitch = 0.984f; //pitch value for the tooth, to adjust the pixel calc of the center of the tooth. Helps big gears stay in lockstep.
 
     [SerializeField] private Sprite toothSprite; //Sprite storage for tooth of Gear
     private float toothScaleFactor = 0.012f; //scale factor for the teeth
@@ -33,7 +34,7 @@ public class AdaptiveGearController : MonoBehaviour
         //spinFactor controls overall speed
         if (spins)
         {
-            float spin;
+            float spin; //calc spin based upon spin dir
             if (spinDir == SpinDir.Clockwise)
                 spin = (360f / teeth) * spinFactor * Time.deltaTime;
             else
@@ -49,11 +50,11 @@ public class AdaptiveGearController : MonoBehaviour
         for(int i = toothHolder.transform.childCount -1; i >= 0; i--) //go backwards, to ensure all are destroyed 
         {
             if (Application.isPlaying)             //if the application is active, destroy them
-            {
+            {                                      //destroy doesn't work in editor
                 Destroy(toothHolder.transform.GetChild(i).gameObject);
             }
             else                                   //if the application is not active, use DestroyImmediate instead
-            {
+            {                                      //destroyimmediate doesn't work in active play
                 DestroyImmediate(toothHolder.transform.GetChild(i).gameObject);
             }
         }
@@ -90,8 +91,8 @@ public class AdaptiveGearController : MonoBehaviour
             //triangulate a vector3 in the appropriate direction
             float vertical = Mathf.Sin(radians);                          //one side of the traingle,
             float horizontal = Mathf.Cos(radians);                        //other side of the triangle,
-            Vector3 spawnDir = new Vector3(horizontal, vertical, 0);    //combine them to one normalized vector
-            rectTransform.anchoredPosition = (spawnDir * radius);           //move in that direction, a radius amount
+            Vector3 spawnDir = new Vector3(horizontal, vertical, 0);      //combine them to one normalized vector
+            rectTransform.anchoredPosition = (spawnDir * radius * pitch);           //move in that direction, a radius amount, modulated by the pitch of the tooth.
             rectTransform.localRotation = Quaternion.Euler(0, 0, ((360f / (float)teeth) * i) - 90f); //rotate outwards (-90 is the direction the first tooth spawns in)
         }
     }
