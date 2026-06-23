@@ -8,9 +8,12 @@ public class AdaptiveGearController : MonoBehaviour
 {
 
     public float teeth = 8;
+    public float Radius { get { return radius; } }
+    private float radius;
 
     private bool spins = true; //boolean storage for spinning (probably always true, w/e)
     public float spinFactor = 10; //multiplies output speed, controlling speed of all gears
+    public SpinDir spinDir = SpinDir.Clockwise;
 
     [SerializeField] private Sprite toothSprite; //Sprite storage for tooth of Gear
     private float toothScaleFactor = 0.012f; //scale factor for the teeth
@@ -28,7 +31,15 @@ public class AdaptiveGearController : MonoBehaviour
         //spin speed of gear
         //more teeth == slower, so divide by number of teeth
         //spinFactor controls overall speed
-        toothHolder.transform.Rotate(0, 0, ((2.0f * (float)MathF.PI)/teeth) * spinFactor ); 
+        if (spins)
+        {
+            float spin;
+            if (spinDir == SpinDir.Clockwise)
+                spin = (360f / teeth) * spinFactor * Time.deltaTime;
+            else
+                spin = (360f / teeth) * spinFactor * Time.deltaTime * -1;
+            toothHolder.transform.Rotate(0f, 0f, spin, Space.Self);
+        }
     }
 
     //Regenerate the Gear and its teeth whenever something is changed.
@@ -49,7 +60,7 @@ public class AdaptiveGearController : MonoBehaviour
 
         //setup variables used by all of the teeth made
         float toothWidthInPixels = toothSprite == null ? toothSprite.rect.width * toothScaleFactor : 20f; //get the size of the tooth sprite, scaled
-        float radius = (teeth * toothWidthInPixels) / (2.0f * (float)MathF.PI); //calculate radius in radians
+        radius = (teeth * toothWidthInPixels) / (2.0f * (float)MathF.PI); //calculate radius in radians
 
         //setup the circle in the middle
         if (gearCenterSprite != null)
@@ -85,6 +96,16 @@ public class AdaptiveGearController : MonoBehaviour
         }
     }
 
+    public void FlipSpin()
+    {
+        if (spinDir == SpinDir.Clockwise)
+            spinDir = SpinDir.CounterClockwise;
+        else if (spinDir == SpinDir.CounterClockwise)
+            spinDir = SpinDir.Clockwise;
+        else
+            throw new Exception("bad spindir");
+    }
+
     #region Teeth Count Changing Functions
     public void IncrementTeeth()
     {
@@ -113,4 +134,10 @@ public class AdaptiveGearController : MonoBehaviour
         }
     }
     #endregion
+}
+
+public enum SpinDir
+{
+    Clockwise = 1,
+    CounterClockwise = -1
 }
