@@ -7,7 +7,10 @@ using UnityEngine.UI;
 public class AdaptiveGearController : MonoBehaviour
 {
 
-    public int teeth = 8;
+    public float teeth = 8;
+
+    private bool spins = true; //boolean storage for spinning (probably always true, w/e)
+    public float spinFactor = 10; //multiplies output speed, controlling speed of all gears
 
     [SerializeField] private Sprite toothSprite; //Sprite storage for tooth of Gear
     private float toothScaleFactor = 0.012f; //scale factor for the teeth
@@ -18,6 +21,14 @@ public class AdaptiveGearController : MonoBehaviour
     void Start()
     {
         RecalcImage();   
+    }
+
+    private void Update()
+    {
+        //spin speed of gear
+        //more teeth == slower, so divide by number of teeth
+        //spinFactor controls overall speed
+        toothHolder.transform.Rotate(0, 0, ((2.0f * (float)MathF.PI)/teeth) * spinFactor ); 
     }
 
     //Regenerate the Gear and its teeth whenever something is changed.
@@ -38,7 +49,7 @@ public class AdaptiveGearController : MonoBehaviour
 
         //setup variables used by all of the teeth made
         float toothWidthInPixels = toothSprite == null ? toothSprite.rect.width * toothScaleFactor : 20f; //get the size of the tooth sprite, scaled
-        float radius = (teeth * toothWidthInPixels) / (2 * MathF.PI); //calculate radius in radians
+        float radius = (teeth * toothWidthInPixels) / (2.0f * (float)MathF.PI); //calculate radius in radians
 
         //setup the circle in the middle
         if (gearCenterSprite != null)
