@@ -8,11 +8,10 @@ public class AdaptiveGearController : MonoBehaviour
 {
 
     public float teeth = 8;
-    public float Radius { get { return radius; } }
     private float radius;
 
     private bool spins = true; //boolean storage for spinning (probably always true, w/e, just in case)
-    public float spinFactor = 10; //multiplies output speed, controlling speed of all gears
+    public static float spinFactor = 8; //multiplies output speed, controlling speed of all gears
     public SpinDir spinDir = SpinDir.Clockwise;
     public static float pitch = 0.984f; //pitch value for the tooth, to adjust the pixel calc of the center of the tooth. Helps big gears stay in lockstep.
 
@@ -93,8 +92,16 @@ public class AdaptiveGearController : MonoBehaviour
             float horizontal = Mathf.Cos(radians);                        //other side of the triangle,
             Vector3 spawnDir = new Vector3(horizontal, vertical, 0);      //combine them to one normalized vector
             rectTransform.anchoredPosition = (spawnDir * radius * pitch);           //move in that direction, a radius amount, modulated by the pitch of the tooth.
-            rectTransform.localRotation = Quaternion.Euler(0, 0, ((360f / (float)teeth) * i) - 90f); //rotate outwards (-90 is the direction the first tooth spawns in)
+            rectTransform.localRotation = Quaternion.Euler(0, 0, ((360f / (float)teeth) * i) - 90f); //rotate outwards (-90 is the direction the first tooth spawns in). Quaternions use degrees, not radians
         }
+    }
+
+    //Radius is calculated in RecalcImage, and just making that public will work, theoretically.
+    //However, if the load order of the functions fucks up, it'll bug out in weird ways. This garuntees that the Radius is always correct when it's needed.
+    public float GetRadius()
+    {
+        float toothWidthInPixels = toothSprite == null ? toothSprite.rect.width * toothScaleFactor : 20f; //get the size of the tooth sprite, scaled
+        return ((teeth * toothWidthInPixels) / (2.0f * (float)MathF.PI)); //calculate radius in radians
     }
 
     public void FlipSpin()
@@ -105,6 +112,11 @@ public class AdaptiveGearController : MonoBehaviour
             spinDir = SpinDir.Clockwise;
         else
             throw new Exception("bad spindir");
+    }
+
+    public void SetSpin(SpinDir temp)
+    {
+        spinDir = temp;
     }
 
     #region Teeth Count Changing Functions
