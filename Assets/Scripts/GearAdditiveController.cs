@@ -7,6 +7,7 @@ using UnityEngine;
 //Main job is mananging gears visually
 public class GearAdditiveController : MonoBehaviour
 {
+    public static GearAdditiveController Instance { get; private set; }
 
     AdaptiveGearController gearControllerPrefab; //prefab gear controller
     //List of AdaptiveGearControllers; order matters
@@ -15,11 +16,24 @@ public class GearAdditiveController : MonoBehaviour
     [SerializeField] AdaptiveGearController heartGear; //the player's main gear (undeletable)
     [SerializeField] GameObject gearHolder; //common parent of all gears
 
+    //awake is called before Start
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         gearControllerPrefab = Resources.Load<AdaptiveGearController>("AdaptiveGear");
-        Debug.Log(gearControllerPrefab);
         gearControllers = new List<AdaptiveGearController>();
     }
 
@@ -55,12 +69,53 @@ public class GearAdditiveController : MonoBehaviour
         }
     }
 
+    //debug: forces all AbilityCoreControllers to enable their buttons 
+    public void ShowButtons()
+    {
+        foreach (AdaptiveGearController gearController in gearControllers)
+        {
+            gearController.EnableButtons();
+        }
+    }
+
+    //turns on the buttons for empty ability controllers
+    //needed for placing abilities
+    public void EnableEmptySockets()
+    {
+        foreach(AdaptiveGearController gearController in gearControllers)
+        {
+            gearController.EnableEmptySockets();
+        }
+    }
+
+    public void DisableButtons()
+    {
+        foreach (AdaptiveGearController gearController in gearControllers)
+        {
+            gearController.DisableButtons();
+        }
+    }
+
+    //used to set the ability for this button
+    public void AbilityButtonClicked(int tooth, AdaptiveGearController gearController, AbilitySocketController socketController)
+    {
+        DisableButtons();
+        int temp = Random.Range(0, 3);
+        if (temp == 0) { socketController.addAbility(new Ability(AbilityName.Slash)); }
+        else if (temp == 1) { socketController.addAbility(new Ability(AbilityName.Smash)); }
+        else if (temp == 2) { socketController.addAbility(new Ability(AbilityName.Slap)); }
+        else
+        {
+            socketController.addAbility(new Ability(AbilityName.Slap));
+        }
+    }
+
     #region Gear List Management
     //add a gear, pass in the gear class to add to the chain
     public void AddGear(Gear g)
     {
         AdaptiveGearController temp = Instantiate(gearControllerPrefab);
-        temp.SetTeeth(g.teeth);
+        temp.SetTeethAndSlots(g.teeth, g.abilitySlots);
         temp.transform.SetParent(gearHolder.transform);
         gearControllers.Add(temp);
         PlaceGears();
@@ -69,11 +124,12 @@ public class GearAdditiveController : MonoBehaviour
     //testing function: adding randomly sized gears
     public void AddRandomGear()
     {
-        AddGear(new Gear(Random.Range(6, 40)));
+        AddGear(new Gear(Random.Range(6, 40), true));
     }
 
     public void RemoveGear(int i)
     {
+        if(gearControllers.Count == 0) return;
         Destroy(gearControllers[i].gameObject);
         gearControllers.RemoveAt(i);
         PlaceGears();

@@ -1,13 +1,24 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using UnityEditor.iOS;
 using UnityEditor.PackageManager;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
+//Controller for each individual gear
 public class AdaptiveGearController : MonoBehaviour
 {
 
     public float teeth = 8;
+    private bool hasAbilitySlots = false;
+    List<int> abilitySlots; //keeps track of what slots the gear has, in an easy to track list. This'll make it easy to tell what slots exist in this gear.
+    List<AbilitySocketController> abilitySocketControllers; //keeps track of the ability socket controllers made by this.
+
+    AbilitySocketController abilitySocketControllerPrefab; //prefab holder
+
     private float radius;
 
     private bool spins = true; //boolean storage for spinning (probably always true, w/e, just in case)
@@ -19,11 +30,14 @@ public class AdaptiveGearController : MonoBehaviour
     private float toothScaleFactor = 0.012f; //scale factor for the teeth
     [SerializeField] private GameObject toothHolder; //GameObject for holding all of the Teeth generated
     [SerializeField] private Image gearCenterSprite; //holder for the center of Gear sprite
-
+    private void Awake()
+    {
+        abilitySocketControllerPrefab = Resources.Load<AbilitySocketController>("AbilitySocket");
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        RecalcImage();   
+        RecalcImage();
     }
 
     private void Update()
@@ -42,7 +56,7 @@ public class AdaptiveGearController : MonoBehaviour
         }
     }
 
-    //Regenerate the Gear and its teeth whenever something is changed.
+    //Regenerate the Gear and its teeth and abilities whenever something is changed.
     private void RecalcImage()
     {
         //purge all old teeth from the gameobject
@@ -93,6 +107,13 @@ public class AdaptiveGearController : MonoBehaviour
             Vector3 spawnDir = new Vector3(horizontal, vertical, 0);      //combine them to one normalized vector
             rectTransform.anchoredPosition = (spawnDir * radius * pitch);           //move in that direction, a radius amount, modulated by the pitch of the tooth.
             rectTransform.localRotation = Quaternion.Euler(0, 0, ((360f / (float)teeth) * i) - 90f); //rotate outwards (-90 is the direction the first tooth spawns in). Quaternions use degrees, not radians
+
+            //if there is an ability core here, place it
+            if (hasAbilitySlots && abilitySlots.Contains(i)) //this is why this list exists, alongside the abilitySocketControllers list. it's way more indexable, makes it easy to tell if there's a slot that's supposed to be here.
+            {
+                AbilitySocketController socketController = abilitySocketControllers.Find(x => x.tooth == i); //find the abilitySocketController for this tooth
+                socketController.GetComponent<RectTransform>().anchoredPosition = (spawnDir * radius * pitch * 0.8f); //place it slightly behind the tooth
+            }
         }
     }
 
@@ -119,6 +140,31 @@ public class AdaptiveGearController : MonoBehaviour
         spinDir = temp;
     }
 
+    public void EnableButtons()
+    {
+        foreach (AbilitySocketController controller in abilitySocketControllers)
+        {
+            controller.manageButtonStatus(true);
+        }
+
+    }
+
+    public void DisableButtons()
+    {
+        foreach(AbilitySocketController controller in abilitySocketControllers)
+        {
+            controller.manageButtonStatus(false);
+        }
+    }
+
+    public void EnableEmptySockets()
+    {
+        foreach (AbilitySocketController controller in abilitySocketControllers)
+        {
+            controller.enableIfEmpty();
+        }
+    }
+
     #region Teeth Count Changing Functions
     public void IncrementTeeth()
     {
@@ -134,6 +180,35 @@ public class AdaptiveGearController : MonoBehaviour
             RecalcImage();
         }
     }
+
+    public void SetTeethAndSlots(int t, List<int> ac)
+    {
+        if (t < 6 || t > 999)
+        {
+            throw new System.Exception("Invalid number of teeth to generate a gear with: " + t.ToString());
+        }
+        else
+        {
+            teeth = t;
+            if (ac.Count > 0)
+            {
+                Debug.Log("this gear has ability cores, number:" + ac.Count);
+                abilitySlots = ac;
+                abilitySocketControllers = new List<AbilitySocketController>();
+                for (int i = 0; i < ac.Count; i++)
+                {
+                    AbilitySocketController temp = Instantiate(abilitySocketControllerPrefab); //make the socket
+                    temp.transform.SetParent(this.transform); //give it a parent
+                    temp.parentController = this;
+                    temp.tooth = ac[i]; //tell it what tooth it's attached to
+                    abilitySocketControllers.Add(temp); //add it to the list
+                }
+                hasAbilitySlots = true;
+            }
+            RecalcImage();
+        }
+    }
+
     public void SetTeeth(int t)
     {
         if (t < 6 || t > 999)
