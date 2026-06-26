@@ -12,6 +12,14 @@ public class Gear
     //for if there is no ability cores, and called by others
     public Gear(int t)
     {
+        if (t > 100)
+        {
+            t = 100;
+        }
+        if(t < 6)
+        {
+            t = 6;
+        }
         this.teeth = t;
     }
 
