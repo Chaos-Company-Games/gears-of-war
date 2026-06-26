@@ -12,6 +12,7 @@ public class GearAdditiveController : MonoBehaviour
     AdaptiveGearController gearControllerPrefab; //prefab gear controller
     //List of AdaptiveGearControllers; order matters
     List<AdaptiveGearController> gearControllers;
+    List<Ability> storedAbilities;
 
     [SerializeField] AdaptiveGearController heartGear; //the player's main gear (undeletable)
     [SerializeField] GameObject gearHolder; //common parent of all gears
@@ -35,6 +36,7 @@ public class GearAdditiveController : MonoBehaviour
     {
         gearControllerPrefab = Resources.Load<AdaptiveGearController>("AdaptiveGear");
         gearControllers = new List<AdaptiveGearController>();
+        storedAbilities = new List<Ability>();
     }
 
     // Update is called once per frame
@@ -108,6 +110,18 @@ public class GearAdditiveController : MonoBehaviour
         {
             socketController.addAbility(new Ability(AbilityName.Slap));
         }
+    }
+
+    private void PlaceStoredAbilities()
+    {
+
+    }
+
+    //add an ability to the ability storage area
+    public void AddAbility(Ability a)
+    {
+        storedAbilities.Add(a);
+        PlaceStoredAbilities();
     }
 
     #region Gear List Management
