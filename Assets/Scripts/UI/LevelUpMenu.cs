@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 //Attach this to level up canvas UI, and disable it by default
 public class LevelUpMenu : MonoBehaviour
@@ -77,7 +78,18 @@ public class LevelUpMenu : MonoBehaviour
 
     void OnOptionChosen(int index)
     {
-
+        if (levelUpOptions[index] is Ability)
+        {
+            GearAdditiveController.Instance.AddAbility((Ability)levelUpOptions[index]);
+        }
+        else if (levelUpOptions[index] is Gear)
+        {
+            GearAdditiveController.Instance.AddGear((Gear)levelUpOptions[index]);
+        }
+        else
+        {
+            Debug.LogError("Mamma miaaaa");
+        }
         //Apply upgrade here
         //For example: UpgradeManager.instance.Apply(chosenUpgrade);
 
@@ -126,7 +138,7 @@ public class LevelUpMenu : MonoBehaviour
             {
                 //Gear
                 int numTeeth = Random.Range(6,100);
-                Gear g = new Gear (numTeeth);
+                Gear g = new Gear (numTeeth, true);
                 s = g;
             }
             else
@@ -150,7 +162,7 @@ public class LevelUpMenu : MonoBehaviour
             {
                 //Gear
                 int numTeeth = Random.Range(6,100);
-                Gear g = new Gear (numTeeth);
+                Gear g = new Gear (numTeeth, true);
                 s = g;
             }
             else
@@ -163,7 +175,7 @@ public class LevelUpMenu : MonoBehaviour
         {
             //Rolled a mythic //always a 3 slot gear btw with >= 10 teeth
             int numTeeth = Random.Range(10, 100);
-            Gear g = new Gear(numTeeth);
+            Gear g = new Gear(numTeeth, true);
             s = g;
             s.rarity = Rarity.MYTHIC;
         }
