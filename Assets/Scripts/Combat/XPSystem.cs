@@ -54,7 +54,7 @@ public class XPSystem : MonoBehaviour
         onLevelUp?.Invoke(currentLevel);
 
         //Freeze game while we pick 3
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
         LevelUpMenu.instance?.Show(currentLevel);
     }
 

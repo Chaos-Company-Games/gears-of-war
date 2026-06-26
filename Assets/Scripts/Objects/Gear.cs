@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Gear class represents the gear. Used to pass around gear info into an AdaptiveGearController
-public class Gear 
+public class Gear : SelectableObject 
 {
     public int teeth;
     public List<int> abilitySlots; //because this doesn't get used to store abilities, only the slot positions matters in this object

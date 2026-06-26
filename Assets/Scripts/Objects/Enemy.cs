@@ -22,6 +22,7 @@ public class Enemy: MonoBehaviour
     {
         currentHP = maxHp;
         target = GameObject.FindGameObjectWithTag("Player").transform;
+        transform.LookAt(target);
     }
 
     void Update()
@@ -33,7 +34,7 @@ public class Enemy: MonoBehaviour
         if (distToTarget > attackRange)
         {
             //Move towards player
-            Vector2 dir = (target.position = transform.position).normalized;
+            Vector2 dir = (target.position - transform.position).normalized;
             transform.position += (Vector3)(dir * moveSPeed * Time.deltaTime);
         }
         else

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ability
+public class Ability : SelectableObject
 {
     public AbilityName ability;
     public Ability(AbilityName a)
@@ -14,5 +14,9 @@ public enum AbilityName
 {
     Slap,
     Smash,
-    Slash
+    Slash,
+    Sling,
+    Skewer,
+    Singe
+
 }
