@@ -1,35 +1,84 @@
+using NUnit.Framework;
 using UnityEngine;
 
 //Class for managing combat opponents in game.
-public class Enemy 
+public class Enemy: MonoBehaviour
 {
-    int maxHP { get; set; }
-    int HP { get; set; }
+    [Header("Stats")]
+    public float maxHp = 30f;
+    public float moveSPeed = 1.5f;
+    public float attackRange = 1.2f;
+    public float attackDamage = 5f;
+    public float attackCooldown = 1.5f;
+    public int xpReward = 10;
 
+    private float currentHP;
+    private float attackTimer = 0f;
+    private bool isDead = false;
 
+    private Transform target; //Player position, probs never changes
 
-
-    #region HealthFunctions
-    //Reduce HP by amount passed in
-    public void takeDamage(int dmg)
+    void Start()
     {
-        HP = HP - dmg;
-        if (HP < 0)
+        currentHP = maxHp;
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
+    void Update()
+    {
+        if (isDead || target == null) return;
+
+        float distToTarget = Vector2.Distance(transform.position, target.position);
+
+        if (distToTarget > attackRange)
         {
-            HP = 0;
-            //death trigger
+            //Move towards player
+            Vector2 dir = (target.position = transform.position).normalized;
+            transform.position += (Vector3)(dir * moveSPeed * Time.deltaTime);
+        }
+        else
+        {
+            //In range - attack on cooldown
+            attackTimer -= Time.deltaTime;
+            if (attackTimer <= 0f)
+            {
+                Attack();
+                attackTimer = attackCooldown;
+            }
         }
     }
 
-    public void getHealed(int rmdy)
+    void Attack()
     {
-        HP = HP + rmdy;
-        if( HP > maxHP)
+        PlayerHealth player = target.GetComponent<PlayerHealth>();
+        if (player != null)
         {
-            HP = maxHP;
+            //Later we can add some sort of feedback, UI or red flash
+            player.TakeDamage(attackDamage);
         }
     }
-    #endregion
+
+    public void TakeDamage(float amount)
+    {
+        if (isDead) return;
+
+        currentHP -= amount;
+        if (currentHP <= 0f)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        isDead = true;
+
+        //Tell wavemanager and xpsystem about the tragic news
+        WaveManager.instance?.OnEnemyKilled();
+        XPSystem.instance?.AddXP(xpReward);
+
+        Destroy(gameObject);
+    }
 }
 
 
