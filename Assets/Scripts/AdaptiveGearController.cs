@@ -27,6 +27,7 @@ public class AdaptiveGearController : MonoBehaviour
     public static float pitch = 0.984f; //pitch value for the tooth, to adjust the pixel calc of the center of the tooth. Helps big gears stay in lockstep.
 
     [SerializeField] private Sprite toothSprite; //Sprite storage for tooth of Gear
+    [SerializeField] private Sprite majorToothSprite; //Sprite storage for special tooth
     private float toothScaleFactor = 0.012f; //scale factor for the teeth
     [SerializeField] private GameObject toothHolder; //GameObject for holding all of the Teeth generated
     [SerializeField] private Image gearCenterSprite; //holder for the center of Gear sprite
@@ -199,7 +200,7 @@ public class AdaptiveGearController : MonoBehaviour
                 {
                     AbilitySocketController temp = Instantiate(abilitySocketControllerPrefab); //make the socket
                     temp.transform.SetParent(this.transform); //give it a parent
-                    temp.parentController = this;
+                    temp.setUp(this);
                     temp.tooth = ac[i]; //tell it what tooth it's attached to
                     abilitySocketControllers.Add(temp); //add it to the list
                 }

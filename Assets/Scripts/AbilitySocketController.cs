@@ -4,7 +4,7 @@ using UnityEngine.UI;
 //used to manage AbilitySockets in the game. Takes care of gameobjects, colors, buttons, etc etc
 public class AbilitySocketController : MonoBehaviour
 {
-    public AdaptiveGearController parentController; //the gear that this thing is a part of. probably a better way to do this, but we ball
+    public AdaptiveGearController parentController; //the gear that this thing is a part of. if not in a gear, is null.
 
     [SerializeField] GameObject abilityGem; //off at the start, changes color when an ability is put into this
     [SerializeField] Button abilityButton; //the button that the player clicks to socket an ability into it
@@ -14,7 +14,7 @@ public class AbilitySocketController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        abilityButton.onClick.AddListener(() => GearAdditiveController.Instance.AbilityButtonClicked(tooth, parentController, this));
+
     }
 
     // Update is called once per frame
@@ -41,7 +41,20 @@ public class AbilitySocketController : MonoBehaviour
         }
         ability = a;
     }
+    //Setup functions setup the button's onClick function. Overloaded: if in ability storage, use no parameter. If in a gear, pass in the gear.
+    #region SetUp
+    public void setUp()
+    {
+        parentController = null;
+        abilityButton.onClick.AddListener(() => GearAdditiveController.Instance.StoredAbilityClicked(this));
+    }
 
+    public void setUp(AdaptiveGearController pC) 
+    {
+        parentController = pC;
+        abilityButton.onClick.AddListener(() => GearAdditiveController.Instance.AbilityButtonClicked(tooth, parentController, this));
+    }
+    #endregion
     //this function is used to enable the button for this gameobject.
     //the button is critical for socketing gems, but is not always available.
     public void manageButtonStatus(bool ableState)

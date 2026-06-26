@@ -9,13 +9,16 @@ public class GearAdditiveController : MonoBehaviour
 {
     public static GearAdditiveController Instance { get; private set; }
 
+    AbilitySocketController abilitySocketControllerPrefab; //prefab holder
+
     AdaptiveGearController gearControllerPrefab; //prefab gear controller
     //List of AdaptiveGearControllers; order matters
     List<AdaptiveGearController> gearControllers;
-    List<Ability> storedAbilities;
+    List<AbilitySocketController> storedAbilities; //holds the stored abilities in the storage area
 
     [SerializeField] AdaptiveGearController heartGear; //the player's main gear (undeletable)
     [SerializeField] GameObject gearHolder; //common parent of all gears
+    [SerializeField] GameObject abilityStorage; //reference to the common parent of stored abilities
 
     //awake is called before Start
     private void Awake()
@@ -28,6 +31,8 @@ public class GearAdditiveController : MonoBehaviour
         {
             Instance = this;
         }
+
+        abilitySocketControllerPrefab = Resources.Load<AbilitySocketController>("AbilitySocket");
     }
 
 
@@ -36,7 +41,7 @@ public class GearAdditiveController : MonoBehaviour
     {
         gearControllerPrefab = Resources.Load<AdaptiveGearController>("AdaptiveGear");
         gearControllers = new List<AdaptiveGearController>();
-        storedAbilities = new List<Ability>();
+        storedAbilities = new List<AbilitySocketController>();
     }
 
     // Update is called once per frame
@@ -71,6 +76,16 @@ public class GearAdditiveController : MonoBehaviour
         }
     }
 
+    //places the stored abilities whenever it needs to be re-calced.
+    private void PlaceStoredAbilities()
+    {
+        for(int i = 0; i < storedAbilities.Count; i++)
+        {
+            //set its position
+            storedAbilities[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(0, i * -20, 0);
+        }
+    }
+
     //debug: forces all AbilityCoreControllers to enable their buttons 
     public void ShowButtons()
     {
@@ -98,21 +113,22 @@ public class GearAdditiveController : MonoBehaviour
         }
     }
 
-    //used to set the ability for this button
+    //triggers when a highlighted ability is clicked on, when an ability is active
     public void AbilityButtonClicked(int tooth, AdaptiveGearController gearController, AbilitySocketController socketController)
     {
         DisableButtons();
-        int temp = Random.Range(0, 3);
-        if (temp == 0) { socketController.addAbility(new Ability(AbilityName.Slash)); }
-        else if (temp == 1) { socketController.addAbility(new Ability(AbilityName.Smash)); }
-        else if (temp == 2) { socketController.addAbility(new Ability(AbilityName.Slap)); }
-        else
-        {
-            socketController.addAbility(new Ability(AbilityName.Slap));
-        }
+        //USE STORED ABILITY, INSTEAD OF RANDOM
+        //int temp = Random.Range(0, 3);
+        //if (temp == 0) { socketController.addAbility(new Ability(AbilityName.Slash)); }
+        //else if (temp == 1) { socketController.addAbility(new Ability(AbilityName.Smash)); }
+        //else if (temp == 2) { socketController.addAbility(new Ability(AbilityName.Slap)); }
+        //else
+        //{
+        //    socketController.addAbility(new Ability(AbilityName.Slap));
+        //}
     }
-
-    private void PlaceStoredAbilities()
+    //when a stored ability is clicked, highlight the slots it can go into.
+    public void StoredAbilityClicked(AbilitySocketController ac)
     {
 
     }
@@ -120,8 +136,18 @@ public class GearAdditiveController : MonoBehaviour
     //add an ability to the ability storage area
     public void AddAbility(Ability a)
     {
-        storedAbilities.Add(a);
+        AbilitySocketController temp = Instantiate(abilitySocketControllerPrefab); //make the socket
+        temp.transform.SetParent(abilityStorage.transform); //give it a parent
+        temp.setUp();
+        storedAbilities.Add(temp); //add it to the list
         PlaceStoredAbilities();
+    }
+
+    //debug function: add random ability
+    public void AddRandomAbility()
+    {
+        AddAbility(new Ability((AbilityName)Random.Range(0, 3)));
+
     }
 
     #region Gear List Management
