@@ -94,8 +94,11 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log(target.gameObject.name);
 
         //calc amount of damage
-        target.TakeDamage(10);
-
+        if (Vector3.Distance(transform.position, target.transform.position) <= 45f)
+        {
+            target.TakeDamage(10);
+        }
+        
         Debug.Log(a.ability);
     }
 
