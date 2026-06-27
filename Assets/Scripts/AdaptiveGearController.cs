@@ -22,7 +22,7 @@ public class AdaptiveGearController : MonoBehaviour
     private float radius;
 
     private bool spins = true; //boolean storage for spinning (probably always true, w/e, just in case)
-    public static float spinFactor = 6; //multiplies output speed, controlling speed of all gears
+    public static float spinFactor = 4; //multiplies output speed, controlling speed of all gears
     public SpinDir spinDir = SpinDir.Clockwise;
     public static float pitch = 0.984f; //pitch value for the tooth, to adjust the pixel calc of the center of the tooth. Helps big gears stay in lockstep.
 
@@ -54,6 +54,7 @@ public class AdaptiveGearController : MonoBehaviour
             else
                 spin = (360f / teeth) * spinFactor * Time.deltaTime * -1;
             toothHolder.transform.Rotate(0f, 0f, spin, Space.Self);
+            Debug.Log(spin);
         }
     }
 
@@ -114,6 +115,12 @@ public class AdaptiveGearController : MonoBehaviour
             {
                 AbilitySocketController socketController = abilitySocketControllers.Find(x => x.tooth == i); //find the abilitySocketController for this tooth
                 socketController.GetComponent<RectTransform>().anchoredPosition = (spawnDir * radius * pitch * 0.6f); //place it slightly behind the tooth
+            }
+
+            if (i == 0)
+            {
+                toothImage.sprite = majorToothSprite;
+                rectTransform.localScale = new Vector3(toothScaleFactor * 1.5f, toothScaleFactor * 1.5f, 1f);
             }
         }
     }
