@@ -56,10 +56,14 @@ public class Gear : SelectableObject
             {
                 //add a core to a random tooth that doesn't already have a core
                 int temp2;
+                int temp3;
+                int temp4;
                 do
                 {
                     temp2 = Random.Range(0, t);
-                } while (o.Contains(temp2));
+                    temp3 = temp2 + 1;
+                    temp4 = temp2 - 1;
+                } while (o.Contains(temp2) || o.Contains(temp3) || o.Contains(temp4)); //ensure there is not already a socket there or adjacent
                 o.Add(temp2);
             }
         }
