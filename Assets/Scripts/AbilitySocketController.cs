@@ -26,7 +26,7 @@ public class AbilitySocketController : MonoBehaviour
     public void addAbility(Ability a)
     {
         abilityGem.SetActive(true);
-        Debug.Log("ability core filled, ability is " + a.ability.ToString());
+        //Debug.Log("ability core filled, ability is " + a.ability.ToString());
         if (a.ability == AbilityName.Slash)
         {
             abilityGem.GetComponent<RawImage>().color = new Color(1f, 0, 0);

@@ -28,6 +28,10 @@ public class Gear : SelectableObject
     {
         //decide how many ability cores
         int temp;
+        if(t <= 8)
+        {
+            t = 8;
+        }
         if (t > 8 && t <= 16)
         {
             temp = Random.Range(0, 1);

@@ -16,6 +16,7 @@ public class AdaptiveGearController : MonoBehaviour
     private bool hasAbilitySlots = false;
     List<int> abilitySlots; //keeps track of what slots the gear has, in an easy to track list. This'll make it easy to tell what slots exist in this gear.
     List<AbilitySocketController> abilitySocketControllers; //keeps track of the ability socket controllers made by this.
+    private float abilityWait = 0f; //waits between ability triggers
 
     AbilitySocketController abilitySocketControllerPrefab; //prefab holder
 
@@ -24,7 +25,7 @@ public class AdaptiveGearController : MonoBehaviour
     private bool spins = true; //boolean storage for spinning (probably always true, w/e, just in case)
     public static float spinFactor = 4f; //multiplies output speed, controlling speed of all gears
     public SpinDir spinDir = SpinDir.Clockwise;
-    public static float pitch = 0.984f; //pitch value for the tooth, to adjust the pixel calc of the center of the tooth. Helps big gears stay in lockstep.
+    public static float pitch = 0.98f; //pitch value for the tooth, to adjust the pixel calc of the center of the tooth. Helps big gears stay in lockstep.
 
     [SerializeField] private Sprite toothSprite; //Sprite storage for tooth of Gear
     [SerializeField] private Sprite majorToothSprite; //Sprite storage for special tooth
@@ -49,15 +50,45 @@ public class AdaptiveGearController : MonoBehaviour
         if (spins)
         {
             float spin; //calc spin based upon spin dir
+            float toothPortion = 360f / teeth;
             if (spinDir == SpinDir.Clockwise)
-                spin = (360f / (float)teeth) * spinFactor * Time.deltaTime;
+                spin = toothPortion * spinFactor * Time.deltaTime;
             else
-                spin = (360f / teeth) * spinFactor * Time.deltaTime * -1;
+                spin = toothPortion * spinFactor * Time.deltaTime * -1;
             toothHolder.transform.Rotate(0f, 0f, spin, Space.Self);
             //Debug.Log(Math.Abs(toothHolder.transform.localRotation.eulerAngles.z));
 
             //if we're spinning past an ability, trigger it
-
+            if (hasAbilitySlots)
+            {
+                if(abilityWait > 0f)
+                {
+                    abilityWait = abilityWait - spin;
+                }
+                else
+                {
+                    foreach (AbilitySocketController ability in abilitySocketControllers)
+                    {
+                        if(ability.ability != null)
+                        {
+                            float loc = Math.Abs(toothHolder.transform.localRotation.eulerAngles.z);
+                            if (loc < 0f)
+                            {
+                                loc = loc + 180f;
+                            }
+                            //Debug.Log(loc);
+                            float targetLoc = ability.tooth * toothPortion; //calc location of ability
+                                                                            //Debug.Log(targetLoc + " | " + (targetLoc - 5f) + " | " + (targetLoc + 5f) + " | " + loc);
+                            if (targetLoc - 1f <= loc && targetLoc + 1f >= loc)
+                            {
+                                Debug.Log("Near ability");
+                                PlayerHealth.instance.DoAbility(ability.ability);
+                                abilityWait = 2f;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -211,7 +242,7 @@ public class AdaptiveGearController : MonoBehaviour
             teeth = t;
             if (ac.Count > 0)
             {
-                Debug.Log("this gear has ability cores, number:" + ac.Count);
+                //Debug.Log("this gear has ability cores, number:" + ac.Count);
                 abilitySlots = ac;
                 abilitySocketControllers = new List<AbilitySocketController>();
                 for (int i = 0; i < ac.Count; i++)

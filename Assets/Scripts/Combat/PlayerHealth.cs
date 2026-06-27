@@ -74,6 +74,11 @@ public class PlayerHealth : MonoBehaviour
         hpBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newWidth);
     }
 
+    public void DoAbility(Ability a)
+    {
+        Debug.Log(a.ability);
+    }
+
     IEnumerator Emote(int id)
     {
         if (id == 0)
