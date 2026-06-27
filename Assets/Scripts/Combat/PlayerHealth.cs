@@ -6,6 +6,7 @@ using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
@@ -18,11 +19,14 @@ public class PlayerHealth : MonoBehaviour
     private float currentHP;
 
 //Make some events for flexibility sake
-    public UnityEvent onDeath;
     public UnityEvent onHealthChanged; //current, max
     [SerializeField] private RawImage hpBar;
     [SerializeField] private Image turtle;
     [SerializeField] private Sprite[] emotes;
+
+    [SerializeField] private GameObject gameOverScreen;
+
+    bool isDead = false;
 
     void Awake()
     {
@@ -65,7 +69,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        onDeath?.Invoke();
+        
         StartCoroutine(Emote(2));
         Debug.Log("You lose!! idiot..");
         //game over screen tbd V
@@ -79,6 +83,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void DoAbility(Ability a, int teethSize)
     {
+        if (isDead) return;
         //Pick a target
         Enemy target = WaveManager.instance.spawnedEnemies[0];
         for (int i = 1; i < WaveManager.instance.spawnedEnemies.Count; i++)
@@ -108,7 +113,7 @@ public class PlayerHealth : MonoBehaviour
         {
             yield return null;
         }
-        else if (id == 1) //Take damage
+        else if (id == 1 && !isDead) //Take damage
         {
             turtle.sprite = emotes[1];
             yield return new WaitForSeconds(0.5f);
@@ -117,7 +122,13 @@ public class PlayerHealth : MonoBehaviour
         else if (id == 2)
         {
             turtle.sprite = emotes[2];
-            yield return null;
+            yield return new WaitForSeconds(1f);
+            gameOverScreen.SetActive(true);
         }
+    }
+
+    public void NewGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }
