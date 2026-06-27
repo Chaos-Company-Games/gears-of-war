@@ -22,7 +22,7 @@ public class AdaptiveGearController : MonoBehaviour
     private float radius;
 
     private bool spins = true; //boolean storage for spinning (probably always true, w/e, just in case)
-    public static float spinFactor = 4; //multiplies output speed, controlling speed of all gears
+    public static float spinFactor = 4f; //multiplies output speed, controlling speed of all gears
     public SpinDir spinDir = SpinDir.Clockwise;
     public static float pitch = 0.984f; //pitch value for the tooth, to adjust the pixel calc of the center of the tooth. Helps big gears stay in lockstep.
 
@@ -50,11 +50,14 @@ public class AdaptiveGearController : MonoBehaviour
         {
             float spin; //calc spin based upon spin dir
             if (spinDir == SpinDir.Clockwise)
-                spin = (360f / teeth) * spinFactor * Time.deltaTime;
+                spin = (360f / (float)teeth) * spinFactor * Time.deltaTime;
             else
                 spin = (360f / teeth) * spinFactor * Time.deltaTime * -1;
             toothHolder.transform.Rotate(0f, 0f, spin, Space.Self);
-            Debug.Log(spin);
+            //Debug.Log(Math.Abs(toothHolder.transform.localRotation.eulerAngles.z));
+
+            //if we're spinning past an ability, trigger it
+
         }
     }
 
@@ -114,7 +117,7 @@ public class AdaptiveGearController : MonoBehaviour
             if (hasAbilitySlots && abilitySlots.Contains(i)) //this is why this list exists, alongside the abilitySocketControllers list. it's way more indexable, makes it easy to tell if there's a slot that's supposed to be here.
             {
                 AbilitySocketController socketController = abilitySocketControllers.Find(x => x.tooth == i); //find the abilitySocketController for this tooth
-                socketController.GetComponent<RectTransform>().anchoredPosition = (spawnDir * radius * pitch * 0.6f); //place it slightly behind the tooth
+                socketController.GetComponent<RectTransform>().anchoredPosition = (spawnDir * radius * .8f); //place it slightly behind the tooth
             }
 
             if (i == 0)

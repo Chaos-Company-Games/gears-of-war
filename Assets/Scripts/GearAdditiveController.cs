@@ -180,7 +180,7 @@ public class GearAdditiveController : MonoBehaviour
     //testing function: adding randomly sized gears
     public void AddRandomGear()
     {
-        AddGear(new Gear(Random.Range(6, 40), true));
+        AddGear(new Gear(Random.Range(8, 60), true));
     }
 
     public void RemoveGear(int i)

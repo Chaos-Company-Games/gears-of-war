@@ -16,9 +16,9 @@ public class Gear : SelectableObject
         {
             t = 100;
         }
-        if(t < 6)
+        if(t < 8)
         {
-            t = 6;
+            t = 8;
         }
         this.teeth = t;
     }
@@ -59,6 +59,7 @@ public class Gear : SelectableObject
                 o.Add(temp2);
             }
         }
+        Debug.Log(o.Count);
         abilitySlots = o;
     }
 
