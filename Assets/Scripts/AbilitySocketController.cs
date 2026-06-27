@@ -41,14 +41,18 @@ public class AbilitySocketController : MonoBehaviour
         }
         ability = a;
     }
-    //Setup functions setup the button's onClick function. Overloaded: if in ability storage, use no parameter. If in a gear, pass in the gear.
+    //Setup functions setup the button's onClick function. different functions, depending on if in ability storage or on a gear
     #region SetUp
-    public void setUp()
+    //this setUp function is called from the GearAdditiveController
+    public void setUp(Ability a)
     {
         parentController = null;
         abilityButton.onClick.AddListener(() => GearAdditiveController.Instance.StoredAbilityClicked(this));
+        abilityButton.gameObject.SetActive(true);
+        abilityButton.gameObject.GetComponent<Image>().color = new Color(0, 0, 0, 0f);
+        addAbility(a);
     }
-
+    //this setUp function is called from AdaptiveGearController
     public void setUp(AdaptiveGearController pC) 
     {
         parentController = pC;

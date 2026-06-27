@@ -15,10 +15,12 @@ public class GearAdditiveController : MonoBehaviour
     //List of AdaptiveGearControllers; order matters
     List<AdaptiveGearController> gearControllers;
     List<AbilitySocketController> storedAbilities; //holds the stored abilities in the storage area
+    private AbilitySocketController tempSelectedAbility; //temporary storage of which ability was selected
 
     [SerializeField] AdaptiveGearController heartGear; //the player's main gear (undeletable)
-    [SerializeField] GameObject gearHolder; //common parent of all gears
+    [SerializeField] GameObject gearHolder; //reference to the common parent of all gears
     [SerializeField] GameObject abilityStorage; //reference to the common parent of stored abilities
+    [SerializeField] GameObject abilityPlacementCancel; //reference to the button which cancels the placement of an ability
 
     //awake is called before Start
     private void Awake()
@@ -82,7 +84,13 @@ public class GearAdditiveController : MonoBehaviour
         for(int i = 0; i < storedAbilities.Count; i++)
         {
             //set its position
-            storedAbilities[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(0, i * -20, 0);
+            RectTransform temp = storedAbilities[i].GetComponent<RectTransform>();
+            //place it in the top left position of its parent
+            temp.anchorMin = new Vector2(0, 1); 
+            temp.anchorMax = new Vector2(0, 1);
+            temp.pivot = new Vector2(0, 1);
+
+            temp.anchoredPosition = new Vector3(20, -5 + (i * -30), 0);
         }
     }
 
@@ -113,10 +121,10 @@ public class GearAdditiveController : MonoBehaviour
         }
     }
 
-    //triggers when a highlighted ability is clicked on, when an ability is active
+    //triggers when an empty socket is clicked on, when a stored ability is selected
     public void AbilityButtonClicked(int tooth, AdaptiveGearController gearController, AbilitySocketController socketController)
     {
-        DisableButtons();
+        DisableButtons(); //turn the empty sockets back off
         //USE STORED ABILITY, INSTEAD OF RANDOM
         //int temp = Random.Range(0, 3);
         //if (temp == 0) { socketController.addAbility(new Ability(AbilityName.Slash)); }
@@ -126,11 +134,28 @@ public class GearAdditiveController : MonoBehaviour
         //{
         //    socketController.addAbility(new Ability(AbilityName.Slap));
         //}
+        socketController.addAbility(tempSelectedAbility.ability); //move the ability into the selected empty socket
+        abilityPlacementCancel.SetActive(false); //turn the cancel button back off
+        storedAbilities.Remove(tempSelectedAbility);
+        Destroy(tempSelectedAbility.gameObject); //destroy the gameobject
+        tempSelectedAbility = null; //remove it from the select ability storage
+        PlaceStoredAbilities(); //replace the other abilities
+
     }
-    //when a stored ability is clicked, highlight the slots it can go into.
+    //when a stored ability is clicked, highlight the slots it can go into, and remember it
     public void StoredAbilityClicked(AbilitySocketController ac)
     {
+        abilityPlacementCancel.SetActive(true); //turn on the cancel button
+        EnableEmptySockets();       //highlight sockets it can sit in
+        tempSelectedAbility = ac; //remember it
+    }
 
+    //cancels the placement of a stored ability
+    public void CancelAbilityPlacement()
+    {
+        abilityPlacementCancel.SetActive(false);
+        DisableButtons();
+        tempSelectedAbility = null;
     }
 
     //add an ability to the ability storage area
@@ -138,7 +163,7 @@ public class GearAdditiveController : MonoBehaviour
     {
         AbilitySocketController temp = Instantiate(abilitySocketControllerPrefab); //make the socket
         temp.transform.SetParent(abilityStorage.transform); //give it a parent
-        temp.setUp();
+        temp.setUp(a); //setup the color and on click event of that socket
         storedAbilities.Add(temp); //add it to the list
         PlaceStoredAbilities();
     }
