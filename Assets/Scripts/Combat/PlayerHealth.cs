@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -11,11 +12,13 @@ public class PlayerHealth : MonoBehaviour
 
 //Make some events for flexibility sake
     public UnityEvent onDeath;
-    public UnityEvent<float, float> onHealthChanged; //current, max
+    public UnityEvent onHealthChanged; //current, max
+    [SerializeField] private RawImage hpBar;
     void Start()
     {
         currentHP = maxHp;
-        onHealthChanged?.Invoke(currentHP, maxHp);
+        onHealthChanged.AddListener(UpdateHPBar);
+        onHealthChanged?.Invoke();
     }
 
     public void TakeDamage(float amount)
@@ -23,7 +26,7 @@ public class PlayerHealth : MonoBehaviour
         if (currentHP <= 0f) return;
 
         currentHP = Mathf.Max(0f, currentHP - amount);
-        onHealthChanged?.Invoke(currentHP, maxHp);
+        onHealthChanged?.Invoke();
 
         if (currentHP <= 0f)
         {
@@ -34,7 +37,7 @@ public class PlayerHealth : MonoBehaviour
     public void Heal(float amount)
     {
         currentHP = Mathf.Min(maxHp, currentHP + amount);
-        onHealthChanged?.Invoke(currentHP, maxHp);
+        onHealthChanged?.Invoke();
     }
 
     void Die()
@@ -42,5 +45,11 @@ public class PlayerHealth : MonoBehaviour
         onDeath?.Invoke();
         Debug.Log("You lose!! idiot..");
         //game over screen tbd V
+    }
+
+    void UpdateHPBar()
+    {
+        float newWidth = currentHP/maxHp * 490f; //490 is the base size of the HP bar
+        hpBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newWidth);
     }
 }

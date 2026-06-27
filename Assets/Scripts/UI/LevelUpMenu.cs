@@ -14,6 +14,7 @@ public class LevelUpMenu : MonoBehaviour
     public Button[] optionButtons; //3 buttons
     public TextMeshProUGUI[] optionLabels; //label to each button
     public TextMeshProUGUI[] rarityLabels;
+    public TextMeshProUGUI[] slotLabels;
     public TextMeshProUGUI levelLabel;
 
     //Placeholder option names, we change this later
@@ -61,10 +62,12 @@ public class LevelUpMenu : MonoBehaviour
                 if (levelUpOptions[i] is Ability)
                 {
                     optionLabels[i].text = ((Ability)levelUpOptions[i]).ability.ToString();
+                    slotLabels[i].text = "";
                 }
                 else if (levelUpOptions[i] is Gear)
                 {
                     optionLabels[i].text = $"{((Gear)levelUpOptions[i]).teeth} : tooth Gear";
+                    slotLabels[i].text = $"{((Gear)levelUpOptions[i]).abilitySlots.Count} : slots";
                 }
                 else
                 {
@@ -137,8 +140,8 @@ public class LevelUpMenu : MonoBehaviour
             else if (AorG == 1)
             {
                 //Gear
-                int numTeeth = Random.Range(6,100);
-                Gear g = new Gear (numTeeth, true);
+                int numTeeth = Random.Range(6,40);
+                Gear g = new Gear (numTeeth, 1);
                 s = g;
             }
             else
@@ -161,8 +164,13 @@ public class LevelUpMenu : MonoBehaviour
             else if (AorG == 1)
             {
                 //Gear
-                int numTeeth = Random.Range(6,100);
-                Gear g = new Gear (numTeeth, true);
+                int numTeeth = Random.Range(12,85);
+                int numSlots = 1;
+                if (numTeeth >= 40 && Random.Range(0,2) > 0)
+                {
+                    numSlots = 2;
+                }
+                Gear g = new Gear (numTeeth, numSlots);
                 s = g;
             }
             else
@@ -174,9 +182,14 @@ public class LevelUpMenu : MonoBehaviour
         else if (rarity == 1)
         {
             //Rolled a mythic //always a 3 slot gear btw with >= 10 teeth
-            int numTeeth = Random.Range(10, 100);
-            Gear g = new Gear(numTeeth, true);
-            s = g;
+            int numTeeth = Random.Range(40,85);
+                int numSlots = 3;
+                if (numTeeth >= 40 && Random.Range(0,2) > 0)
+                {
+                    numSlots = 2;
+                }
+                Gear g = new Gear (numTeeth, numSlots);
+                s = g;
             s.rarity = Rarity.MYTHIC;
         }
         else
