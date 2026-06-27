@@ -22,7 +22,7 @@ public class AdaptiveGearController : MonoBehaviour
     private float radius;
 
     private bool spins = true; //boolean storage for spinning (probably always true, w/e, just in case)
-    public static float spinFactor = 8; //multiplies output speed, controlling speed of all gears
+    public static float spinFactor = 6; //multiplies output speed, controlling speed of all gears
     public SpinDir spinDir = SpinDir.Clockwise;
     public static float pitch = 0.984f; //pitch value for the tooth, to adjust the pixel calc of the center of the tooth. Helps big gears stay in lockstep.
 
@@ -113,7 +113,7 @@ public class AdaptiveGearController : MonoBehaviour
             if (hasAbilitySlots && abilitySlots.Contains(i)) //this is why this list exists, alongside the abilitySocketControllers list. it's way more indexable, makes it easy to tell if there's a slot that's supposed to be here.
             {
                 AbilitySocketController socketController = abilitySocketControllers.Find(x => x.tooth == i); //find the abilitySocketController for this tooth
-                socketController.GetComponent<RectTransform>().anchoredPosition = (spawnDir * radius * pitch * 0.8f); //place it slightly behind the tooth
+                socketController.GetComponent<RectTransform>().anchoredPosition = (spawnDir * radius * pitch * (0.6f * (.1f * (float)teeth))); //place it slightly behind the tooth
             }
         }
     }

@@ -90,7 +90,7 @@ public class GearAdditiveController : MonoBehaviour
             temp.anchorMax = new Vector2(0, 1);
             temp.pivot = new Vector2(0, 1);
 
-            temp.anchoredPosition = new Vector3(20, -5 + (i * -30), 0);
+            temp.anchoredPosition = new Vector3(5, -10 + (i * -50), 0);
         }
     }
 
