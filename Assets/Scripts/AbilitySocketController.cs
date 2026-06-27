@@ -1,9 +1,11 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 //used to manage AbilitySockets in the game. Takes care of gameobjects, colors, buttons, etc etc
-public class AbilitySocketController : MonoBehaviour
+public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public AdaptiveGearController parentController; //the gear that this thing is a part of. if not in a gear, is null.
 
@@ -12,6 +14,8 @@ public class AbilitySocketController : MonoBehaviour
     public Ability ability = null; //ability is null until something is given to it
     public int tooth;
 
+    [SerializeField] GameObject mouseOverBox;
+    [SerializeField] TextMeshProUGUI mouseOverText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,6 +26,23 @@ public class AbilitySocketController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (ability != null) 
+        {
+            mouseOverBox.SetActive(true);
+            mouseOverText.text = ability.ability.ToString();
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if(ability != null) 
+        {
+            mouseOverBox.SetActive(false);
+        }
     }
 
     public void addAbility(Ability a)

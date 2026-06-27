@@ -85,11 +85,12 @@ public class GearAdditiveController : MonoBehaviour
         {
             //set its position
             RectTransform temp = storedAbilities[i].GetComponent<RectTransform>();
-            //place it in the top left position of its parent
+            //anchor it in the top left position of its parent
             temp.anchorMin = new Vector2(0, 1); 
             temp.anchorMax = new Vector2(0, 1);
             temp.pivot = new Vector2(0, 1);
 
+            //place it in its position on the left
             temp.anchoredPosition = new Vector3(5, -10 + (i * -50), 0);
         }
     }
