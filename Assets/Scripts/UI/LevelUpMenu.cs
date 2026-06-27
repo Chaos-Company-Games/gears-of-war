@@ -69,6 +69,11 @@ public class LevelUpMenu : MonoBehaviour
                     optionLabels[i].text = $"{((Gear)levelUpOptions[i]).teeth} : tooth Gear";
                     slotLabels[i].text = $"{((Gear)levelUpOptions[i]).abilitySlots.Count} : slots";
                 }
+                else if (levelUpOptions[i] is Heal)
+                {
+                    optionLabels[i].text = "Heal 25% Health";
+                    slotLabels[i].text = "";
+                }
                 else
                 {
                     Debug.LogError("Oh come on now this isnt a real option");
@@ -88,6 +93,10 @@ public class LevelUpMenu : MonoBehaviour
         else if (levelUpOptions[index] is Gear)
         {
             GearAdditiveController.Instance.AddGear((Gear)levelUpOptions[index]);
+        }
+        else if (levelUpOptions[index] is Heal)
+        {
+            PlayerHealth.instance.Heal(PlayerHealth.instance.maxHp * .25f);
         }
         else
         {
@@ -113,7 +122,13 @@ public class LevelUpMenu : MonoBehaviour
         //First, we pick the rarity
         int rarity = Random.Range(1,32);
 
-        if (rarity <= 31 && rarity >= 16)
+        if(rarity <= 31 && rarity >= 26)
+        {
+            //Rolled a health restore
+            Heal h = new Heal();
+            s = h;
+        }
+        else if (rarity <= 31 && rarity >= 16)
         {
             //Rolled a common
             s = GenerateAbility();
