@@ -323,7 +323,13 @@ MonoBehaviour:
   - waveName: Wave 1
     enemyPool:
     - enemyPrefab: {fileID: 3433585470243193831, guid: 0ed895b16083543bc89f256604c0c1f5, type: 3}
-      spawnWeight: 1
+      spawnWeight: 0.5
+    - enemyPrefab: {fileID: 6686573334471236824, guid: 0325c6306726c40d989a13e0f129a046, type: 3}
+      spawnWeight: 0.1
+    - enemyPrefab: {fileID: 3775623188088088776, guid: 29619d3e5086e44c9a74dc32378fc6d0, type: 3}
+      spawnWeight: 0.4
+    - enemyPrefab: {fileID: 9123265352920121022, guid: eff98630e65f04176a6566852a2a87ae, type: 3}
+      spawnWeight: 0.8
     spawnTimeMin: 3
     spawnTimeMax: 5
     killsToNextWave: 10

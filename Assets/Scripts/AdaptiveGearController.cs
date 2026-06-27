@@ -1,9 +1,9 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using UnityEditor.iOS;
-using UnityEditor.PackageManager;
-using UnityEditor.Rendering;
+//using UnityEditor.iOS;
+//using UnityEditor.PackageManager;
+//using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -63,7 +63,7 @@ public class AdaptiveGearController : MonoBehaviour
             {
                 if(abilityWait > 0f)
                 {
-                    Debug.Log(abilityWait);
+                    //Debug.Log(abilityWait);
                     abilityWait = abilityWait - MathF.Abs(spin);
                 }
                 else

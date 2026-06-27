@@ -34,6 +34,8 @@ public class WaveManager : MonoBehaviour
     private int killsThisWave = 0;
     private bool spawning = false;
     private bool gameOver = false;
+
+    public List<Enemy> spawnedEnemies = new List<Enemy>();
     void Awake()
     {
         //Singelton stuff
@@ -82,8 +84,8 @@ public class WaveManager : MonoBehaviour
         spawnPointUpdated.z = Random.Range(-1,1);
         GameObject prefab = PickWeightedEnemy(wave.enemyPool);
         if (prefab == null) return;
-
-        Instantiate(prefab, spawnPointUpdated, Quaternion.identity);
+        GameObject spawnedEnemy = Instantiate(prefab, spawnPointUpdated, Quaternion.identity);
+        spawnedEnemies.Add(spawnedEnemy.GetComponent<Enemy>());
     }
 
     GameObject PickWeightedEnemy(List<EnemySpawnEntry> pool)

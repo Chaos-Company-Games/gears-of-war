@@ -1,5 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -76,6 +79,21 @@ public class PlayerHealth : MonoBehaviour
 
     public void DoAbility(Ability a, int teethSize)
     {
+        //Pick a target
+        Enemy target = WaveManager.instance.spawnedEnemies[0];
+        for (int i = 1; i < WaveManager.instance.spawnedEnemies.Count; i++)
+        {
+            if (Vector3.Distance(transform.position, target.transform.position) > Vector3.Distance(transform.position, WaveManager.instance.spawnedEnemies[i].transform.position))
+            {
+                target = WaveManager.instance.spawnedEnemies[i];
+            }
+        }
+
+        //Do the ability
+        if (target == null) return;
+        Debug.Log(target.gameObject.name);
+        target.TakeDamage(10);
+
         Debug.Log(a.ability);
     }
 
