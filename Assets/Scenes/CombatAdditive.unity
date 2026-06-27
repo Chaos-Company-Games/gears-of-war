@@ -322,7 +322,7 @@ MonoBehaviour:
   waves:
   - waveName: Wave 1
     enemyPool:
-    - enemyPrefab: {fileID: 3641897609956027185, guid: e5e77c9f0c06041f4b047b9640c88d16, type: 3}
+    - enemyPrefab: {fileID: 3433585470243193831, guid: 0ed895b16083543bc89f256604c0c1f5, type: 3}
       spawnWeight: 1
     spawnTimeMin: 3
     spawnTimeMax: 5
@@ -539,7 +539,7 @@ Transform:
   m_GameObject: {fileID: 1211461402}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 46.12, y: 1, z: 0}
+  m_LocalPosition: {x: 46.12, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

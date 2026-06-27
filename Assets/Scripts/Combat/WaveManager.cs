@@ -78,10 +78,12 @@ public class WaveManager : MonoBehaviour
 
     void SpawnEnemy(WaveData wave)
     {
+        Vector3 spawnPointUpdated = spawnPoint.position;
+        spawnPointUpdated.z = Random.Range(-1,1);
         GameObject prefab = PickWeightedEnemy(wave.enemyPool);
         if (prefab == null) return;
 
-        Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+        Instantiate(prefab, spawnPointUpdated, Quaternion.identity);
     }
 
     GameObject PickWeightedEnemy(List<EnemySpawnEntry> pool)

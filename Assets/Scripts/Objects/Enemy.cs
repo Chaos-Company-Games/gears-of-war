@@ -49,7 +49,7 @@ public class Enemy: MonoBehaviour
             anim.SetFloat("animState", 0);
             if (attackTimer <= 0f)
             {
-                anim.SetFloat("animState", 2);
+                anim.Play("Attack");
                 //Attack(); //Trigger attack from animation
                 attackTimer = attackCooldown;
             }
