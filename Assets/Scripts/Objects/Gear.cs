@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //Gear class represents the gear. Used to pass around gear info into an AdaptiveGearController
@@ -28,11 +29,11 @@ public class Gear : SelectableObject
     {
         //decide how many ability cores
         int temp;
-        if(t <= 8)
+        if(t < 8)
         {
             t = 8;
         }
-        if (t > 8 && t <= 16)
+        if (t >= 8 && t <= 16)
         {
             temp = Random.Range(0, 1);
         }
@@ -49,44 +50,32 @@ public class Gear : SelectableObject
             temp = Random.Range(1, 4);
         }
 
-        List<int> o = new List<int>();
-        if(temp > 0)
-        {
-            for (int i = 0; i < temp; i++)
-            {
-                //add a core to a random tooth that doesn't already have a core
-                int temp2;
-                int temp3;
-                int temp4;
-                do
-                {
-                    temp2 = Random.Range(0, t);
-                    temp3 = temp2 + 1;
-                    temp4 = temp2 - 1;
-                } while (o.Contains(temp2) || o.Contains(temp3) || o.Contains(temp4)); //ensure there is not already a socket there or adjacent
-                o.Add(temp2);
-            }
-        }
-        abilitySlots = o;
+        abilitySlots = PlaceSlots(t, temp);
     }
 
     //for if you do not care where the slots go
     public Gear(int t, int n) : this(t)
     {
+        abilitySlots = PlaceSlots(t, n);
+    }
+
+    private List<int> PlaceSlots(int teeth, int numSlots)
+    {
         List<int> o = new List<int>();
-        if (n > 0)
+        if (numSlots > 0)
         {
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < numSlots; i++)
             {
                 //add a core to a random tooth that doesn't already have a core
-                int temp2;
+                int temp;
                 do
                 {
-                    temp2 = Random.Range(0, t);
-                } while (o.Contains(temp2));
-                o.Add(temp2);
+                    temp = Random.Range(0, teeth); //get a position
+                } while (Enumerable.Range(temp - 2, 5).Any(o.Contains)); //make sure it's open
+                o.Add(temp);
             }
         }
-        abilitySlots = o;
+        o.Sort();
+        return o;
     }
 }

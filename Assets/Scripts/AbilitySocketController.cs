@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -79,6 +80,14 @@ public class AbilitySocketController : MonoBehaviour
         {
             abilityButton.gameObject.SetActive(false);
         }
+    }
+    //when an ability is triggered, make the socket flicker
+    public IEnumerator Flash()
+    {
+        Color temp = abilityGem.GetComponent<RawImage>().color;
+        abilityGem.GetComponent<RawImage>().color = Color.Lerp(temp, Color.antiqueWhite, .40f); //temporarily change color to golden version
+        yield return new WaitForSeconds(.35f); //wait
+        abilityGem.GetComponent<RawImage>().color = temp; //return color to original
     }
 
     //turns on the button if the socket is empty, so that a new abilities can be given to it

@@ -85,6 +85,7 @@ public class AdaptiveGearController : MonoBehaviour
                                 //Debug.Log("Near ability");
                                 PlayerHealth.instance.DoAbility(ability.ability, (int)teeth);
                                 abilityWait = 2f;
+                                StartCoroutine(ability.Flash());
                             }
                         }
                     }

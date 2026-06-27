@@ -92,6 +92,8 @@ public class PlayerHealth : MonoBehaviour
         //Do the ability
         if (target == null) return;
         Debug.Log(target.gameObject.name);
+
+        //calc amount of damage
         target.TakeDamage(10);
 
         Debug.Log(a.ability);
