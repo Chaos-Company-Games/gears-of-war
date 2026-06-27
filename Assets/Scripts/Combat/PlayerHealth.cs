@@ -74,7 +74,7 @@ public class PlayerHealth : MonoBehaviour
         hpBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newWidth);
     }
 
-    public void DoAbility(Ability a)
+    public void DoAbility(Ability a, int teethSize)
     {
         Debug.Log(a.ability);
     }

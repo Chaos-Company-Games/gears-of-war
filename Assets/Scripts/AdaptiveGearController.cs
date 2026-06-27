@@ -63,7 +63,8 @@ public class AdaptiveGearController : MonoBehaviour
             {
                 if(abilityWait > 0f)
                 {
-                    abilityWait = abilityWait - spin;
+                    Debug.Log(abilityWait);
+                    abilityWait = abilityWait - MathF.Abs(spin);
                 }
                 else
                 {
@@ -81,8 +82,8 @@ public class AdaptiveGearController : MonoBehaviour
                                                                             //Debug.Log(targetLoc + " | " + (targetLoc - 5f) + " | " + (targetLoc + 5f) + " | " + loc);
                             if (targetLoc - 1f <= loc && targetLoc + 1f >= loc)
                             {
-                                Debug.Log("Near ability");
-                                PlayerHealth.instance.DoAbility(ability.ability);
+                                //Debug.Log("Near ability");
+                                PlayerHealth.instance.DoAbility(ability.ability, (int)teeth);
                                 abilityWait = 2f;
                             }
                         }
@@ -154,7 +155,7 @@ public class AdaptiveGearController : MonoBehaviour
             if (i == 0)
             {
                 toothImage.sprite = majorToothSprite;
-                rectTransform.localScale = new Vector3(toothScaleFactor * 1.5f, toothScaleFactor * 1.5f, 1f);
+                rectTransform.localScale = new Vector3(toothScaleFactor * 2f, toothScaleFactor * 2f, 1f);
             }
         }
     }

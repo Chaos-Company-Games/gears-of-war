@@ -63,7 +63,6 @@ public class Gear : SelectableObject
                 o.Add(temp2);
             }
         }
-        Debug.Log(o.Count);
         abilitySlots = o;
     }
 
