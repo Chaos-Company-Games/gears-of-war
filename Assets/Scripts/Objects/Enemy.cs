@@ -1,4 +1,6 @@
+using System.Collections;
 using NUnit.Framework;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 //Class for managing combat opponents in game.
@@ -18,6 +20,7 @@ public class Enemy: MonoBehaviour
 
     private Animator anim;
     float animState = 0; //0 - idle, 1 - move, 2 - attack
+    private Material material;
 
     private Transform target; //Player position, probs never changes
 
@@ -27,6 +30,7 @@ public class Enemy: MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").transform;
         transform.LookAt(target);
         anim = GetComponent<Animator>();
+        material = GetComponentInChildren<Renderer>().material;
     }
 
     void Update()
@@ -72,6 +76,7 @@ public class Enemy: MonoBehaviour
         if (isDead) return;
 
         currentHP -= amount;
+        StartCoroutine(DamageFlash());
         if (currentHP <= 0f)
         {
             isDead = true;
@@ -80,7 +85,8 @@ public class Enemy: MonoBehaviour
         }
         else
         {
-            anim.Play("Damage");
+            //anim.Play("Damage");
+            //Play damage animation if stunned
         }
     }
 
@@ -93,6 +99,13 @@ public class Enemy: MonoBehaviour
         WaveManager.instance?.spawnedEnemies.Remove(this);
 
         Destroy(gameObject);
+    }
+
+    IEnumerator DamageFlash()
+    {
+        material.SetColor("_Base_Color", Color.red);
+        yield return new WaitForSeconds(0.2f);
+        material.SetColor("_Base_Color", Color.black);
     }
     
 }
