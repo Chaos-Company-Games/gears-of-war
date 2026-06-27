@@ -16,6 +16,9 @@ public class Enemy: MonoBehaviour
     private float attackTimer = 0f;
     private bool isDead = false;
 
+    private Animator anim;
+    float animState = 0; //0 - idle, 1 - move, 2 - attack
+
     private Transform target; //Player position, probs never changes
 
     void Start()
@@ -23,6 +26,7 @@ public class Enemy: MonoBehaviour
         currentHP = maxHp;
         target = GameObject.FindGameObjectWithTag("Player").transform;
         transform.LookAt(target);
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -36,25 +40,29 @@ public class Enemy: MonoBehaviour
             //Move towards player
             Vector2 dir = (target.position - transform.position).normalized;
             transform.position += (Vector3)(dir * moveSPeed * Time.deltaTime);
+            anim.SetFloat("animState", 1);
         }
         else
         {
             //In range - attack on cooldown
             attackTimer -= Time.deltaTime;
+            anim.SetFloat("animState", 0);
             if (attackTimer <= 0f)
             {
-                Attack();
+                anim.SetFloat("animState", 2);
+                //Attack(); //Trigger attack from animation
                 attackTimer = attackCooldown;
             }
         }
     }
 
-    void Attack()
+    public void Attack()
     {
         PlayerHealth player = target.GetComponent<PlayerHealth>();
         if (player != null)
         {
             //Later we can add some sort of feedback, UI or red flash
+            
             player.TakeDamage(attackDamage);
         }
     }
@@ -67,6 +75,10 @@ public class Enemy: MonoBehaviour
         if (currentHP <= 0f)
         {
             Die();
+        }
+        else
+        {
+            anim.Play("Die");
         }
     }
 

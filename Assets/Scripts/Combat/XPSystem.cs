@@ -40,13 +40,12 @@ public class XPSystem : MonoBehaviour
     public void AddXP(int amount)
     {
         currentXP += amount;
-        onXPChanged?.Invoke();
-
         while (currentXP >= xpToNextLevel)
         {
             currentXP -= xpToNextLevel;
             LevelUp();
         }
+        onXPChanged?.Invoke();
     }
 
     void LevelUp()
