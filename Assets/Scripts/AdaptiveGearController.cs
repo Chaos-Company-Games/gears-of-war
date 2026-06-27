@@ -80,7 +80,7 @@ public class AdaptiveGearController : MonoBehaviour
                             //Debug.Log(loc);
                             float targetLoc = ability.tooth * toothPortion; //calc location of ability
                                                                             //Debug.Log(targetLoc + " | " + (targetLoc - 5f) + " | " + (targetLoc + 5f) + " | " + loc);
-                            if (targetLoc - 1f <= loc && targetLoc + 1f >= loc)
+                            if (targetLoc - .75f <= loc && targetLoc + .75f >= loc)
                             {
                                 //Debug.Log("Near ability");
                                 PlayerHealth.instance.DoAbility(ability.ability, (int)teeth);

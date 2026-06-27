@@ -34,7 +34,7 @@ public class AbilitySocketController : MonoBehaviour
         }
         else if (a.ability == AbilityName.Smash)
         {
-            abilityGem.GetComponent<RawImage>().color = new Color(0, 1f, 0);
+            abilityGem.GetComponent<RawImage>().color = Color.forestGreen;
         }
         else if (a.ability == AbilityName.Slap)
         {
