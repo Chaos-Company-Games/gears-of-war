@@ -85,10 +85,11 @@ public class Enemy: MonoBehaviour
     void Die()
     {
         isDead = true;
-
+        Debug.Log(gameObject.name + " died!");
         //Tell wavemanager and xpsystem about the tragic news
         WaveManager.instance?.OnEnemyKilled();
         XPSystem.instance?.AddXP(xpReward);
+        WaveManager.instance?.spawnedEnemies.Remove(this);
 
         Destroy(gameObject);
     }
