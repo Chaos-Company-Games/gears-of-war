@@ -125,15 +125,6 @@ public class GearAdditiveController : MonoBehaviour
     public void AbilityButtonClicked(int tooth, AdaptiveGearController gearController, AbilitySocketController socketController)
     {
         DisableButtons(); //turn the empty sockets back off
-        //USE STORED ABILITY, INSTEAD OF RANDOM
-        //int temp = Random.Range(0, 3);
-        //if (temp == 0) { socketController.addAbility(new Ability(AbilityName.Slash)); }
-        //else if (temp == 1) { socketController.addAbility(new Ability(AbilityName.Smash)); }
-        //else if (temp == 2) { socketController.addAbility(new Ability(AbilityName.Slap)); }
-        //else
-        //{
-        //    socketController.addAbility(new Ability(AbilityName.Slap));
-        //}
         socketController.addAbility(tempSelectedAbility.ability); //move the ability into the selected empty socket
         abilityPlacementCancel.SetActive(false); //turn the cancel button back off
         storedAbilities.Remove(tempSelectedAbility);
@@ -171,7 +162,7 @@ public class GearAdditiveController : MonoBehaviour
     //debug function: add random ability
     public void AddRandomAbility()
     {
-        AddAbility(new Ability((AbilityName)Random.Range(0, 3)));
+        AddAbility(new Ability((AbilityName)Random.Range(0, 5)));
 
     }
 

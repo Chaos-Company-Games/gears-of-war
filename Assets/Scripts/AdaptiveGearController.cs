@@ -143,26 +143,34 @@ public class AdaptiveGearController : MonoBehaviour
 
     public void EnableButtons()
     {
-        foreach (AbilitySocketController controller in abilitySocketControllers)
+        if (hasAbilitySlots)
         {
-            controller.manageButtonStatus(true);
+            foreach (AbilitySocketController controller in abilitySocketControllers)
+            {
+                controller.manageButtonStatus(true);
+            }
         }
-
     }
 
     public void DisableButtons()
     {
-        foreach(AbilitySocketController controller in abilitySocketControllers)
+        if (hasAbilitySlots)
         {
-            controller.manageButtonStatus(false);
+            foreach (AbilitySocketController controller in abilitySocketControllers)
+            {
+                controller.manageButtonStatus(false);
+            }
         }
     }
 
     public void EnableEmptySockets()
     {
-        foreach (AbilitySocketController controller in abilitySocketControllers)
+        if (hasAbilitySlots)
         {
-            controller.enableIfEmpty();
+            foreach (AbilitySocketController controller in abilitySocketControllers)
+            {
+                controller.enableIfEmpty();
+            }
         }
     }
 

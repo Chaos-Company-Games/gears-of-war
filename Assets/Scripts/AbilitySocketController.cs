@@ -27,17 +27,25 @@ public class AbilitySocketController : MonoBehaviour
     {
         abilityGem.SetActive(true);
         Debug.Log("ability core filled, ability is " + a.ability.ToString());
-        if (a.ability == AbilityName.Slash) 
+        if (a.ability == AbilityName.Slash)
         {
             abilityGem.GetComponent<RawImage>().color = new Color(1f, 0, 0);
         }
-        else if (a.ability == AbilityName.Smash) 
+        else if (a.ability == AbilityName.Smash)
         {
             abilityGem.GetComponent<RawImage>().color = new Color(0, 1f, 0);
         }
-        else if (a.ability == AbilityName.Slap) 
+        else if (a.ability == AbilityName.Slap)
         {
             abilityGem.GetComponent<RawImage>().color = new Color(0, 0, 1f);
+        }
+        else if (a.ability == AbilityName.Sling)
+        {
+            abilityGem.GetComponent<RawImage>().color = Color.mediumPurple;
+        }
+        else if(a.ability == AbilityName.Skewer)
+        {
+            abilityGem.GetComponent<RawImage>().color = Color.darkOrange;
         }
         ability = a;
     }

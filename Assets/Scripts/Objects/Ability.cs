@@ -18,5 +18,4 @@ public enum AbilityName
     Sling,
     Skewer,
     Singe
-
 }

@@ -28,26 +28,21 @@ public class Gear : SelectableObject
     {
         //decide how many ability cores
         int temp;
-        if (t > 8)
+        if (t > 8 && t <= 16)
         {
             temp = Random.Range(0, 1);
         }
-        else if(t > 16)
+        else if(t > 16 && t<= 21)
         {
             temp = Random.Range(0, 2);
         }
-        else if(t > 22)
+        else if(t > 22 && t<=31)
         {
             temp = Random.Range(1, 3);
         }
         else
         {
             temp = Random.Range(1, 4);
-        }
-
-        if (temp == 0)
-        {
-            temp = 1;
         }
 
         List<int> o = new List<int>();
@@ -67,9 +62,23 @@ public class Gear : SelectableObject
         abilitySlots = o;
     }
 
-    //for if there is only 1 ability core
-    public Gear(int t, int i) : this(t)
+    //for if you do not care where the slots go
+    public Gear(int t, int n) : this(t)
     {
-        abilitySlots = new List<int> { i };
+        List<int> o = new List<int>();
+        if (n > 0)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                //add a core to a random tooth that doesn't already have a core
+                int temp2;
+                do
+                {
+                    temp2 = Random.Range(0, t);
+                } while (o.Contains(temp2));
+                o.Add(temp2);
+            }
+        }
+        abilitySlots = o;
     }
 }
