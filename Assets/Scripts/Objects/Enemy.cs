@@ -74,17 +74,18 @@ public class Enemy: MonoBehaviour
         currentHP -= amount;
         if (currentHP <= 0f)
         {
-            Die();
+            isDead = true;
+            anim.Play("Die");
+            //Die(); //This gets triggered by the animation instead
         }
         else
         {
-            anim.Play("Die");
+            anim.Play("Damage");
         }
     }
 
-    void Die()
+    public void Die()
     {
-        isDead = true;
         Debug.Log(gameObject.name + " died!");
         //Tell wavemanager and xpsystem about the tragic news
         WaveManager.instance?.OnEnemyKilled();
@@ -93,6 +94,7 @@ public class Enemy: MonoBehaviour
 
         Destroy(gameObject);
     }
+    
 }
 
 
