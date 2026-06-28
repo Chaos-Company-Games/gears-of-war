@@ -18,6 +18,7 @@ public class Enemy: MonoBehaviour
     private float attackTimer = 0f;
     private bool isDead = false;
     bool isStaggered = false;
+    float staggerTimer = 0f;
 
     private Animator anim;
     float animState = 0; //0 - idle, 1 - move, 2 - attack
@@ -41,6 +42,17 @@ public class Enemy: MonoBehaviour
 
     void Update()
     {
+        if (staggerTimer > 0)
+        {
+            isStaggered = true;
+            staggerTimer -= Time.deltaTime;
+        }
+        else
+        {
+            staggerTimer = 0;
+            isStaggered = false;
+        }
+
         if (isDead || target == null || isStaggered) return;
 
         float distToTarget = Vector2.Distance(transform.position, target.position);
@@ -119,15 +131,8 @@ public class Enemy: MonoBehaviour
     public void Stagger(float delay)
     {
         StartCoroutine(DamageFlash());
-        StartCoroutine(GetStaggered(delay));
-    }
-
-    IEnumerator GetStaggered(float staggerTime)
-    {
-        isStaggered = true;
         anim.Play("Damage");
-        yield return new WaitForSeconds(staggerTime);
-        isStaggered = false;
+        staggerTimer += delay;
     }
     
 }
