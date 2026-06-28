@@ -18,7 +18,7 @@ public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPoi
     {
         if (ability != null) 
         {
-            GearAdditiveController.Instance.HoverOverEnable(ability);
+            GearAdditiveController.Instance.HoverOverEnable(ability, parentController.teeth);
         }
     }
 

@@ -58,11 +58,32 @@ public class GearAdditiveController : MonoBehaviour
         hoverOverObjectRect = hoverOverObject.GetComponent<RectTransform>(); //we use this a lot, set it up once and then use repeatedly
     }
 
-    public void HoverOverEnable(Ability a)
+    public void HoverOverEnable(Ability a, float teeth)
     {
         if(hoverOverObject.activeSelf == false){
             hoverOverObject.SetActive(true); //set hover over to active 
             hoverOverTitle.text = a.ability.ToString(); //change the text
+
+            if(a.ability == AbilityName.Blap)
+            {
+                hoverOverDesc.text = "Shoot the nearest enemy for <color=#C41E3A>" + (5 * (1f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage.";
+            }
+            else if(a.ability == AbilityName.Smash)
+            {
+                hoverOverDesc.text = "Attack all enemies in melee range for <color=#C41E3A>" + (5 * (.6f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage.";
+            }
+            else if(a.ability == AbilityName.Skewer)
+            {
+                hoverOverDesc.text = "Attack an enemy in melee range for <color=#C41E3A>" + (5 * (.5f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage and heal for 1/4 that.";
+            }
+            else if(a.ability == AbilityName.Stagger)
+            {
+                hoverOverDesc.text = "Stun the nearest enemy for <color=#C41E3A>" + (teeth/10f).ToString() + "</color> seconds.";
+            }
+            else if(a.ability == AbilityName.Sling)
+            {
+                hoverOverDesc.text = "Shoot the nearest enemy and enemies around it for <color=#C41E3A>" + (5 * (0.4f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage.";
+            }
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(hoverOverObject.transform.GetComponentInParent<Canvas>().GetComponent<RectTransform>(), Mouse.current.position.ReadValue(), null, out Vector2 localPos); //convert mouse pos to screen space relative to canvas
             localPos.x = localPos.x + hoverOverObjectRect.rect.width / 2; //move it so that it has the mouse at the top left
