@@ -23,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private RawImage hpBar;
     [SerializeField] private Image turtle;
     [SerializeField] private Sprite[] emotes;
+    [SerializeField] private ParticleSystem gunShot;
 
     [SerializeField] private GameObject gameOverScreen;
 
@@ -86,6 +87,7 @@ public class PlayerHealth : MonoBehaviour
         if (isDead) return;
         //Pick a target
         Enemy target = WaveManager.instance.spawnedEnemies[0];
+        if (target == null) return;
         for (int i = 1; i < WaveManager.instance.spawnedEnemies.Count; i++)
         {
             if (Vector3.Distance(transform.position, target.transform.position) > Vector3.Distance(transform.position, WaveManager.instance.spawnedEnemies[i].transform.position))
@@ -102,6 +104,7 @@ public class PlayerHealth : MonoBehaviour
         if (Vector3.Distance(transform.position, target.transform.position) <= 45f)
         {
             target.TakeDamage(10);
+            gunShot.Play();
         }
         
         Debug.Log(a.ability);
