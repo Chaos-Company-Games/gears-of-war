@@ -3,6 +3,7 @@ using UnityEngine;
 public class SelectableObject 
 {
     public Rarity rarity;
+
 }
 
 public enum Rarity

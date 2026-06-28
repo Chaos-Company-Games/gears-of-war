@@ -59,6 +59,11 @@ public class Gear : SelectableObject
         abilitySlots = PlaceSlots(t, n);
     }
 
+    public Gear(int t, List<int> o) : this(t)
+    {
+        abilitySlots = o;
+    }
+
     private List<int> PlaceSlots(int teeth, int numSlots)
     {
         List<int> o = new List<int>();

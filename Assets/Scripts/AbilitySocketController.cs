@@ -13,9 +13,6 @@ public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPoi
     [SerializeField] Button abilityButton; //the button that the player clicks to socket an ability into it
     public Ability ability = null; //ability is null until something is given to it
     public int tooth;
-
-    [SerializeField] GameObject mouseOverBox;
-    [SerializeField] TextMeshProUGUI mouseOverText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,8 +29,7 @@ public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPoi
     {
         if (ability != null) 
         {
-            mouseOverBox.SetActive(true);
-            mouseOverText.text = ability.ability.ToString();
+            GearAdditiveController.Instance.HoverOverEnable(ability);
         }
     }
 
@@ -41,7 +37,8 @@ public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPoi
     {
         if(ability != null) 
         {
-            mouseOverBox.SetActive(false);
+            GearAdditiveController.Instance.HoverOverDisable();
+
         }
     }
 

@@ -42,7 +42,7 @@ public class Enemy: MonoBehaviour
         if (distToTarget > attackRange)
         {
             //Move towards player
-            Vector2 dir = (target.position - transform.position).normalized;
+            Vector2 dir = new Vector2((target.position.x - transform.position.x), 0).normalized;
             transform.position += (Vector3)(dir * moveSPeed * Time.deltaTime);
             anim.SetFloat("animState", 1);
         }
