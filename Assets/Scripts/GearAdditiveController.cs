@@ -27,6 +27,7 @@ public class GearAdditiveController : MonoBehaviour
     [SerializeField] GameObject hoverOverObject;
     [SerializeField] TextMeshProUGUI hoverOverTitle;
     [SerializeField] TextMeshProUGUI hoverOverDesc;
+    private RectTransform hoverOverObjectRect; //internal reference to hoverOverObject's rect transform, so we don't need to constantly find it
 
     //awake is called before Start
     private void Awake()
@@ -42,7 +43,7 @@ public class GearAdditiveController : MonoBehaviour
 
         abilitySocketControllerPrefab = Resources.Load<AbilitySocketController>("AbilitySocket");
     }
-
+    //Update - unused
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -53,14 +54,9 @@ public class GearAdditiveController : MonoBehaviour
 
         AddGear(new Gear(16, new List<int> { 4 })); //give the player a starting gear
         AddAbility(LevelUpMenu.instance.GenerateAbility()); //give the player a starting ability
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        hoverOverObjectRect = hoverOverObject.GetComponent<RectTransform>(); //we use this a lot, set it up once and then use repeatedly
     }
-
 
     public void HoverOverEnable(Ability a)
     {
@@ -69,17 +65,19 @@ public class GearAdditiveController : MonoBehaviour
             hoverOverTitle.text = a.ability.ToString(); //change the text
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(hoverOverObject.transform.GetComponentInParent<Canvas>().GetComponent<RectTransform>(), Mouse.current.position.ReadValue(), null, out Vector2 localPos); //convert mouse pos to screen space relative to canvas
-            localPos.x = localPos.x + hoverOverObject.GetComponent<RectTransform>().rect.width / 2; //move it so that it has the mouse at the top left
-            localPos.y = localPos.y - hoverOverObject.GetComponent<RectTransform>().rect.height / 2; 
-            
-            hoverOverObject.transform.GetComponent<RectTransform>().localPosition = localPos; //set local position of hoverover
+            localPos.x = localPos.x + hoverOverObjectRect.rect.width / 2; //move it so that it has the mouse at the top left
+            localPos.y = localPos.y - hoverOverObjectRect.rect.height / 2;
+
+            hoverOverObjectRect.localPosition = localPos; //set local position of hoverover
         }
     }
 
     public void HoverOverDisable()
     {
-        hoverOverObject.SetActive(false);
-        hoverOverObject.transform.GetComponent<RectTransform>().localPosition = new Vector3(-50,-50);
+        if (hoverOverObject.activeSelf == true)
+        {
+            hoverOverObject.SetActive(false); //turn it back off
+        }
     }
 
     //Whenever the number of gears changes, recalc their positions and spin directions
@@ -115,12 +113,8 @@ public class GearAdditiveController : MonoBehaviour
         {
             //set its position
             RectTransform temp = storedAbilities[i].GetComponent<RectTransform>();
-            //anchor it in the top left position of its parent
-            temp.anchorMin = new Vector2(0, 1); 
-            temp.anchorMax = new Vector2(0, 1);
-            temp.pivot = new Vector2(0, 1);
 
-            //place it in its position on the left
+            //place it in its position: pivot point is setup earlier, so just place it 'i' down
             temp.anchoredPosition = new Vector3(5, -10 + (i * -50), 0);
         }
     }
@@ -158,7 +152,7 @@ public class GearAdditiveController : MonoBehaviour
         DisableButtons(); //turn the empty sockets back off
         socketController.addAbility(tempSelectedAbility.ability); //move the ability into the selected empty socket
         abilityPlacementCancel.SetActive(false); //turn the cancel button back off
-        storedAbilities.Remove(tempSelectedAbility);
+        storedAbilities.Remove(tempSelectedAbility); //take it out of the list
         Destroy(tempSelectedAbility.gameObject); //destroy the gameobject
         tempSelectedAbility = null; //remove it from the select ability storage
         PlaceStoredAbilities(); //replace the other abilities
@@ -187,6 +181,13 @@ public class GearAdditiveController : MonoBehaviour
         temp.transform.SetParent(abilityStorage.transform); //give it a parent
         temp.setUp(a); //setup the color and on click event of that socket
         storedAbilities.Add(temp); //add it to the list
+
+        //set it up so that it uses the parent as a pivot point
+        RectTransform rectTrans = temp.GetComponent<RectTransform>();
+        rectTrans.anchorMin = new Vector2(0, 1);
+        rectTrans.anchorMax = new Vector2(0, 1);
+        rectTrans.pivot = new Vector2(0, 1);
+
         PlaceStoredAbilities();
     }
 

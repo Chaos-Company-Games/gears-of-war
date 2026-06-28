@@ -103,7 +103,7 @@ public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPoi
     public IEnumerator Flash()
     {
         Color temp = abilityGem.GetComponent<RawImage>().color;
-        abilityGem.GetComponent<RawImage>().color = Color.Lerp(temp, Color.antiqueWhite, .40f); //temporarily change color to golden version
+        abilityGem.GetComponent<RawImage>().color = Color.Lerp(temp, Color.antiqueWhite, .40f); //temporarily change color to whiter version
         yield return new WaitForSeconds(.35f); //wait
         abilityGem.GetComponent<RawImage>().color = temp; //return color to original
     }
