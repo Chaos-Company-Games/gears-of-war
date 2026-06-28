@@ -123,7 +123,8 @@ public class PlayerHealth : MonoBehaviour
                 }
 
                 for (int i = 0; i < smashTargets.Count; i++)
-                {   int baseDamage = 5;
+                {   
+                    int baseDamage = 5;
                     float finalDamage = 0.6f * (baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
                     smashTargets[i].TakeDamage(finalDamage);
                 }
@@ -137,7 +138,10 @@ public class PlayerHealth : MonoBehaviour
             else if (a.ability == AbilityName.Skewer)
             {
                 //TBD
-                target.TakeDamage(10);
+                int baseDamage = 5;
+                float finalDamage = 0.5f * (baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
+                target.TakeDamage(finalDamage);
+                Heal(finalDamage);
             }
             else if (a.ability == AbilityName.Sling)
             {
