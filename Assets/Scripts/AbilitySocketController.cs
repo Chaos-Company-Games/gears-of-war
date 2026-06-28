@@ -46,23 +46,23 @@ public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPoi
     {
         abilityGem.SetActive(true);
         //Debug.Log("ability core filled, ability is " + a.ability.ToString());
-        if (a.ability == AbilityName.Slash)
+        if ((int)a.ability == 0)
         {
             abilityGem.GetComponent<RawImage>().color = new Color(1f, 0, 0);
         }
-        else if (a.ability == AbilityName.Smash)
+        else if ((int)a.ability == 1)
         {
             abilityGem.GetComponent<RawImage>().color = Color.forestGreen;
         }
-        else if (a.ability == AbilityName.Slap)
+        else if ((int)a.ability == 2)
         {
             abilityGem.GetComponent<RawImage>().color = new Color(0, 0, 1f);
         }
-        else if (a.ability == AbilityName.Sling)
+        else if ((int)a.ability == 3)
         {
             abilityGem.GetComponent<RawImage>().color = Color.mediumPurple;
         }
-        else if(a.ability == AbilityName.Skewer)
+        else if((int)a.ability == 4)
         {
             abilityGem.GetComponent<RawImage>().color = Color.darkOrange;
         }
