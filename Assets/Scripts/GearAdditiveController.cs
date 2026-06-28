@@ -53,7 +53,15 @@ public class GearAdditiveController : MonoBehaviour
         storedAbilities = new List<AbilitySocketController>();
 
         AddGear(new Gear(16, new List<int> { 4 })); //give the player a starting gear
-        AddAbility(LevelUpMenu.instance.GenerateAbility()); //give the player a starting ability
+        //give the player two different starting abilities
+        AbilityName ability1, ability2;
+        ability1 = (AbilityName)Random.Range(0, 5);
+        do
+        {
+            ability2 = (AbilityName)Random.Range(0, 5);
+        } while(ability1 ==  ability2);
+        AddAbility(new Ability(ability1)); 
+        AddAbility(new Ability(ability2));
 
         hoverOverObjectRect = hoverOverObject.GetComponent<RectTransform>(); //we use this a lot, set it up once and then use repeatedly
     }
