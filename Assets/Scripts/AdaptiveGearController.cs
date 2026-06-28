@@ -42,7 +42,7 @@ public class AdaptiveGearController : MonoBehaviour
         RecalcImage();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //spin speed of gear
         //more teeth == slower, so divide by number of teeth
@@ -75,7 +75,7 @@ public class AdaptiveGearController : MonoBehaviour
                             float loc = Math.Abs(toothHolder.transform.localRotation.eulerAngles.z);
                             float targetLoc = ability.tooth * toothPortion; //calc location of ability
                             //Debug.Log(targetLoc + " | " + (targetLoc - 5f) + " | " + (targetLoc + 5f) + " | " + loc);
-                            if (targetLoc - .75f <= loc && targetLoc + .75f >= loc)
+                            if (targetLoc - .9f <= loc && targetLoc + .9f >= loc)
                             {
                                 //Debug.Log("Near ability");
                                 PlayerHealth.instance.DoAbility(ability.ability, (int)teeth);
