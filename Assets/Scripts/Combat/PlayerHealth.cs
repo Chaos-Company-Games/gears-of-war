@@ -45,7 +45,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHP = maxHp;
         onHealthChanged.AddListener(UpdateHPBar);
-        onHealthChanged?.Invoke();
+        onHealthChanged.Invoke();
     }
 
     public void TakeDamage(float amount)
@@ -54,7 +54,7 @@ public class PlayerHealth : MonoBehaviour
 
         currentHP = Mathf.Max(0f, currentHP - amount);
         StartCoroutine(Emote(1));
-        onHealthChanged?.Invoke();
+        onHealthChanged.Invoke();
 
         if (currentHP <= 0f)
         {
@@ -65,7 +65,7 @@ public class PlayerHealth : MonoBehaviour
     public void Heal(float amount)
     {
         currentHP = Mathf.Min(maxHp, currentHP + amount);
-        onHealthChanged?.Invoke();
+        onHealthChanged.Invoke();
     }
 
     void Die()
@@ -103,35 +103,63 @@ public class PlayerHealth : MonoBehaviour
         //calc amount of damage
         if (Vector3.Distance(transform.position, target.transform.position) <= 45f)
         {
-            if (a.ability == AbilityName.Slap)
+            if (a.ability == AbilityName.Blap)
             {
-                
+                int baseDamage = 5;
+                float finalDamage = baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize/10f;
             }
             else if (a.ability == AbilityName.Smash)
             {
-                
+                //AOE in front of us
+                List<Enemy> smashTargets = new List<Enemy>();
+                for (int i = 0; i < WaveManager.instance.spawnedEnemies.Count; i++)
+                {
+                    //Check all enemies within 10 units of us
+                    if (Vector3.Distance(transform.position, WaveManager.instance.spawnedEnemies[i].transform.position) < 10f)
+                    {
+                        smashTargets.Add(WaveManager.instance.spawnedEnemies[i]);
+                    }
+                }
+
+                for (int i = 0; i < smashTargets.Count; i++)
+                {   int baseDamage = 5;
+                    float finalDamage = 0.6f * (baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
+                    smashTargets[i].TakeDamage(finalDamage);
+                }
+
             }
-            else if (a.ability == AbilityName.Singe)
+            else if (a.ability == AbilityName.Stagger)
             {
-                
+                //Staggers enemy for a sec
             }
             else if (a.ability == AbilityName.Skewer)
             {
-                
+                //TBD
             }
             else if (a.ability == AbilityName.Sling)
             {
-                
-            }
-            else if (a.ability == AbilityName.Slash)
-            {
-                
+                //Ranged aoe
+                //Hits all enemies within 5 units of the target
+                List<Enemy> slingTargets = new List<Enemy>();
+                for (int i = 0; i < WaveManager.instance.spawnedEnemies.Count; i++)
+                {
+                    if (Vector3.Distance(transform.position, target.transform.position) < 5f)
+                    {
+                        slingTargets.Add(WaveManager.instance.spawnedEnemies[i]);
+                    }
+                }
+
+                for (int i = 0; i < slingTargets.Count; i++)
+                {   int baseDamage = 5;
+                    float finalDamage = 0.4f * (baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
+                    slingTargets[i].TakeDamage(finalDamage);
+                }
             }
             else
             {
-                target.TakeDamage(1);
+                //target.TakeDamage(10);
             }
-            
+            target.TakeDamage(10);
             gunShot.Play();
         }
         

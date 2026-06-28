@@ -12,10 +12,9 @@ public class Ability : SelectableObject
 //named list of abilities
 public enum AbilityName
 {
-    Slap,
+    Blap,
     Smash,
-    Slash,
     Sling,
     Skewer,
-    Singe
+    Stagger
 }
