@@ -118,6 +118,7 @@ public class Enemy: MonoBehaviour
 
     public void Stagger(float delay)
     {
+        StartCoroutine(DamageFlash());
         StartCoroutine(GetStaggered(delay));
     }
 
