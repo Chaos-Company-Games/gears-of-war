@@ -24,6 +24,8 @@ public class Enemy: MonoBehaviour
 
     private Transform target; //Player position, probs never changes
 
+    private EnemyHealthBar healthBar;
+
     void Start()
     {
         currentHP = maxHp;
@@ -31,6 +33,9 @@ public class Enemy: MonoBehaviour
         transform.LookAt(target);
         anim = GetComponent<Animator>();
         material = GetComponentInChildren<Renderer>().material;
+
+        healthBar = Instantiate(Resources.Load<EnemyHealthBar>("EnemyHealthBar"));
+        healthBar.SetUp(this.gameObject);
     }
 
     void Update()
@@ -88,6 +93,7 @@ public class Enemy: MonoBehaviour
             //anim.Play("Damage");
             //Play damage animation if stunned
         }
+        healthBar.CalcHealthBar(currentHP, maxHp);
     }
 
     public void Die()
@@ -99,6 +105,7 @@ public class Enemy: MonoBehaviour
         WaveManager.instance?.spawnedEnemies.Remove(this);
 
         Destroy(gameObject);
+        Destroy(healthBar.gameObject);
     }
 
     IEnumerator DamageFlash()
