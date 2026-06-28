@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 //Controller for the GearAdditive scene.
 //Main job is mananging gears visually
@@ -21,6 +22,11 @@ public class GearAdditiveController : MonoBehaviour
     [SerializeField] GameObject gearHolder; //reference to the common parent of all gears
     [SerializeField] GameObject abilityStorage; //reference to the common parent of stored abilities
     [SerializeField] GameObject abilityPlacementCancel; //reference to the button which cancels the placement of an ability
+
+    //Hover Over Menu
+    [SerializeField] GameObject hoverOverObject;
+    [SerializeField] TextMeshProUGUI hoverOverTitle;
+    [SerializeField] TextMeshProUGUI hoverOverDesc;
 
     //awake is called before Start
     private void Awake()
@@ -44,12 +50,36 @@ public class GearAdditiveController : MonoBehaviour
         gearControllerPrefab = Resources.Load<AdaptiveGearController>("AdaptiveGear");
         gearControllers = new List<AdaptiveGearController>();
         storedAbilities = new List<AbilitySocketController>();
+
+        AddGear(new Gear(16, new List<int> { 4 })); //give the player a starting gear
+        AddAbility(LevelUpMenu.instance.GenerateAbility()); //give the player a starting ability
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+
+    public void HoverOverEnable(Ability a)
+    {
+        if(hoverOverObject.activeSelf == false){
+            hoverOverObject.SetActive(true); //set hover over to active 
+            hoverOverTitle.text = a.ability.ToString(); //change the text
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(hoverOverObject.transform.GetComponentInParent<Canvas>().GetComponent<RectTransform>(), Mouse.current.position.ReadValue(), null, out Vector2 localPos); //convert mouse pos to screen space relative to canvas
+            localPos.x = localPos.x + hoverOverObject.GetComponent<RectTransform>().rect.width / 2; //move it so that it has the mouse at the top left
+            localPos.y = localPos.y - hoverOverObject.GetComponent<RectTransform>().rect.height / 2; 
+            
+            hoverOverObject.transform.GetComponent<RectTransform>().localPosition = localPos; //set local position of hoverover
+        }
+    }
+
+    public void HoverOverDisable()
+    {
+        hoverOverObject.SetActive(false);
+        hoverOverObject.transform.GetComponent<RectTransform>().localPosition = new Vector3(-50,-50);
     }
 
     //Whenever the number of gears changes, recalc their positions and spin directions

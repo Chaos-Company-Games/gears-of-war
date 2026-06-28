@@ -216,7 +216,7 @@ public class LevelUpMenu : MonoBehaviour
         return s;
     }
 
-    Ability GenerateAbility()
+    public Ability GenerateAbility()
     {
         int a = Random.Range(0,  System.Enum.GetNames(typeof(AbilityName)).Length);
         Ability ability = new Ability((AbilityName)a);

@@ -150,7 +150,8 @@ public class AdaptiveGearController : MonoBehaviour
             if (hasAbilitySlots && abilitySlots.Contains(i)) //this is why this list exists, alongside the abilitySocketControllers list. it's way more indexable, makes it easy to tell if there's a slot that's supposed to be here.
             {
                 AbilitySocketController socketController = abilitySocketControllers.Find(x => x.tooth == i); //find the abilitySocketController for this tooth
-                socketController.GetComponent<RectTransform>().anchoredPosition = (spawnDir * radius * .8f); //place it slightly behind the tooth
+
+                socketController.GetComponent<RectTransform>().anchoredPosition = (spawnDir * (radius - 28)); //place it around the edge of the gear, moved back the radius of the socket
             }
 
             if (i == 0)
