@@ -105,8 +105,8 @@ public class AdaptiveGearController : MonoBehaviour
             }
         }
 
-        //setup variables used by all of the teeth made
-        radius = GetRadius();
+        radius = GetRadius(); //get the radius
+
         //setup the circle in the middle
         if (gearCenterSprite != null)
         {
@@ -212,12 +212,14 @@ public class AdaptiveGearController : MonoBehaviour
     }
 
     #region Teeth Count Changing Functions
+    //debug function: unused in gameplay
     public void IncrementTeeth()
     {
         teeth++;
         RecalcImage();
     }
 
+    //debug function: unused in gameplay
     public void DecrementTeeth()
     {
         if (teeth > 6)

@@ -13,17 +13,6 @@ public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPoi
     [SerializeField] Button abilityButton; //the button that the player clicks to socket an ability into it
     public Ability ability = null; //ability is null until something is given to it
     public int tooth;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
