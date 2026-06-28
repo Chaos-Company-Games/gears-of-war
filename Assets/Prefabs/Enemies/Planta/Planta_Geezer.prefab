@@ -101,12 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ae4c2458d5e454592cd1b713cc71ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  maxHp: 30
+  maxHp: 15
   moveSPeed: 1.5
   attackRange: 5
   attackDamage: 5
   attackCooldown: 1.5
-  xpReward: 10
+  xpReward: 30
 --- !u!1 &3666743223989201843
 GameObject:
   m_ObjectHideFlags: 0

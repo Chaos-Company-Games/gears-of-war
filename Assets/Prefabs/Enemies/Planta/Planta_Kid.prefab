@@ -463,7 +463,7 @@ MonoBehaviour:
   attackRange: 5
   attackDamage: 10
   attackCooldown: 3
-  xpReward: 30
+  xpReward: 100
 --- !u!1 &7222625091326573631
 GameObject:
   m_ObjectHideFlags: 0
