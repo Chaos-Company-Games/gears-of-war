@@ -111,9 +111,7 @@ public class AdaptiveGearController : MonoBehaviour
         }
 
         //setup variables used by all of the teeth made
-        float toothWidthInPixels = toothSprite == null ? toothSprite.rect.width * toothScaleFactor : 20f; //get the size of the tooth sprite, scaled
-        radius = (teeth * toothWidthInPixels) / (2.0f * (float)MathF.PI); //calculate radius in radians
-
+        radius = GetRadius();
         //setup the circle in the middle
         if (gearCenterSprite != null)
         {
