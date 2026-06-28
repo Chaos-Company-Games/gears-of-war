@@ -1,6 +1,4 @@
 using System.Collections;
-using NUnit.Framework;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 //Class for managing combat opponents in game.

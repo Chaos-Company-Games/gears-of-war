@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -116,7 +113,7 @@ public class PlayerHealth : MonoBehaviour
                 for (int i = 0; i < WaveManager.instance.spawnedEnemies.Count; i++)
                 {
                     //Check all enemies within 10 units of us
-                    if (Vector3.Distance(transform.position, WaveManager.instance.spawnedEnemies[i].transform.position) < 10f)
+                    if (Vector3.Distance(transform.position, WaveManager.instance.spawnedEnemies[i].transform.position) < 6f)
                     {
                         smashTargets.Add(WaveManager.instance.spawnedEnemies[i]);
                     }
