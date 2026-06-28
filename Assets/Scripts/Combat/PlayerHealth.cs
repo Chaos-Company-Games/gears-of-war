@@ -149,17 +149,21 @@ public class PlayerHealth : MonoBehaviour
                 List<Enemy> slingTargets = new List<Enemy>();
                 for (int i = 0; i < WaveManager.instance.spawnedEnemies.Count; i++)
                 {
-                    if (Vector3.Distance(transform.position, target.transform.position) < 5f)
+                    if (Vector3.Distance(WaveManager.instance.spawnedEnemies[i].transform.position, target.transform.position) < 15f)
                     {
                         slingTargets.Add(WaveManager.instance.spawnedEnemies[i]);
                     }
                 }
 
+                int baseDamage = 5;
+                float finalDamage = baseDamage * ( 0.4f* (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
+
                 for (int i = 0; i < slingTargets.Count; i++)
-                {   int baseDamage = 5;
-                    float finalDamage = baseDamage * ( 0.4f* (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
+                {   
                     slingTargets[i].TakeDamage(finalDamage);
                 }
+
+                target.TakeDamage(finalDamage);
             }
             else
             {
