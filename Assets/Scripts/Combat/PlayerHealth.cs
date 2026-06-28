@@ -103,7 +103,35 @@ public class PlayerHealth : MonoBehaviour
         //calc amount of damage
         if (Vector3.Distance(transform.position, target.transform.position) <= 45f)
         {
-            target.TakeDamage(10);
+            if (a.ability == AbilityName.Slap)
+            {
+                
+            }
+            else if (a.ability == AbilityName.Smash)
+            {
+                
+            }
+            else if (a.ability == AbilityName.Singe)
+            {
+                
+            }
+            else if (a.ability == AbilityName.Skewer)
+            {
+                
+            }
+            else if (a.ability == AbilityName.Sling)
+            {
+                
+            }
+            else if (a.ability == AbilityName.Slash)
+            {
+                
+            }
+            else
+            {
+                target.TakeDamage(1);
+            }
+            
             gunShot.Play();
         }
         

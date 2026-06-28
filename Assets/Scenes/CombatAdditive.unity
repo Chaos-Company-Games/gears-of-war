@@ -333,7 +333,15 @@ MonoBehaviour:
     spawnTimeMin: 3
     spawnTimeMax: 5
     killsToNextWave: 10
+  - waveName: Wave 2
+    enemyPool:
+    - enemyPrefab: {fileID: 935466083896679186, guid: 424049d7099f84b8184c290c9146abaa, type: 3}
+      spawnWeight: 1
+    spawnTimeMin: 5
+    spawnTimeMax: 5
+    killsToNextWave: 1
   spawnPoint: {fileID: 1211461403}
+  spawnedEnemies: []
 --- !u!4 &262133710
 Transform:
   m_ObjectHideFlags: 0
