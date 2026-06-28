@@ -16,9 +16,16 @@ public class AbilitySocketController : MonoBehaviour, IPointerEnterHandler, IPoi
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (ability != null) 
+        if (ability != null) //if there's no ability in it, don't need hover over
         {
-            GearAdditiveController.Instance.HoverOverEnable(ability, parentController.teeth);
+            if (parentController != null) //if there's no parent controller, pass a 0
+            {
+                GearAdditiveController.Instance.HoverOverEnable(ability, parentController.teeth); 
+            }
+            else
+            {
+                GearAdditiveController.Instance.HoverOverEnable(ability, 0);
+            }
         }
     }
 
