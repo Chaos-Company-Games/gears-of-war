@@ -107,6 +107,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 int baseDamage = 5;
                 float finalDamage = baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize/10f;
+                target.TakeDamage(finalDamage);
             }
             else if (a.ability == AbilityName.Smash)
             {
@@ -131,10 +132,12 @@ public class PlayerHealth : MonoBehaviour
             else if (a.ability == AbilityName.Stagger)
             {
                 //Staggers enemy for a sec
+                target.Stagger(teethSize/10f);
             }
             else if (a.ability == AbilityName.Skewer)
             {
                 //TBD
+                target.TakeDamage(10);
             }
             else if (a.ability == AbilityName.Sling)
             {
@@ -159,8 +162,8 @@ public class PlayerHealth : MonoBehaviour
             {
                 //target.TakeDamage(10);
             }
-            target.TakeDamage(10);
             gunShot.Play();
+            
         }
         
         Debug.Log(a.ability);
