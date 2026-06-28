@@ -73,13 +73,8 @@ public class AdaptiveGearController : MonoBehaviour
                         if(ability.ability != null)
                         {
                             float loc = Math.Abs(toothHolder.transform.localRotation.eulerAngles.z);
-                            if (loc < 0f)
-                            {
-                                loc = loc + 180f;
-                            }
-                            //Debug.Log(loc);
                             float targetLoc = ability.tooth * toothPortion; //calc location of ability
-                                                                            //Debug.Log(targetLoc + " | " + (targetLoc - 5f) + " | " + (targetLoc + 5f) + " | " + loc);
+                            //Debug.Log(targetLoc + " | " + (targetLoc - 5f) + " | " + (targetLoc + 5f) + " | " + loc);
                             if (targetLoc - .75f <= loc && targetLoc + .75f >= loc)
                             {
                                 //Debug.Log("Near ability");
