@@ -141,7 +141,7 @@ public class PlayerHealth : MonoBehaviour
                 int baseDamage = 5;
                 float finalDamage = 0.5f * (baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
                 target.TakeDamage(finalDamage);
-                Heal(finalDamage);
+                Heal(finalDamage/2);
             }
             else if (a.ability == AbilityName.Sling)
             {
