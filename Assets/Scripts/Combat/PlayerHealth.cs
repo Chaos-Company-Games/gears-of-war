@@ -99,14 +99,14 @@ public class PlayerHealth : MonoBehaviour
         //Do the ability
         if (target == null) return;
         Debug.Log(target.gameObject.name);
+        float baseDamage = 5;
 
         //calc amount of damage
         if (Vector3.Distance(transform.position, target.transform.position) <= 45f)
         {
             if (a.ability == AbilityName.Blap)
             {
-                int baseDamage = 5;
-                float finalDamage = baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize/10f;
+                float finalDamage = baseDamage * (1f + (0.1f * (int)a.rarity)) + teethSize / 10f;
                 target.TakeDamage(finalDamage);
             }
             else if (a.ability == AbilityName.Smash)
@@ -123,8 +123,8 @@ public class PlayerHealth : MonoBehaviour
                 }
 
                 for (int i = 0; i < smashTargets.Count; i++)
-                {   int baseDamage = 5;
-                    float finalDamage = baseDamage * (0.6f* (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
+                {
+                    float finalDamage = (baseDamage * 0.6f) * (1f + (0.1f * (int)a.rarity)) + teethSize / 10f;
                     smashTargets[i].TakeDamage(finalDamage);
                 }
 
@@ -137,8 +137,7 @@ public class PlayerHealth : MonoBehaviour
             else if (a.ability == AbilityName.Skewer)
             {
                 //TBD
-                int baseDamage = 5;
-                float finalDamage = baseDamage * ( 0.5f* (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
+                float finalDamage = (baseDamage * 0.5f) * (1f + (0.1f * (int)a.rarity)) + teethSize / 10f;
                 target.TakeDamage(finalDamage);
                 Heal(finalDamage * .25f);
             }
@@ -155,8 +154,7 @@ public class PlayerHealth : MonoBehaviour
                     }
                 }
 
-                int baseDamage = 5;
-                float finalDamage = baseDamage * ( 0.4f* (1f + (0.1f * (int)a.rarity)) + teethSize/10f);
+                float finalDamage = (baseDamage * 0.4f) * (1f + (0.1f * (int)a.rarity)) + teethSize / 10f;
 
                 for (int i = 0; i < slingTargets.Count; i++)
                 {   

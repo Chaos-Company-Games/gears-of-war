@@ -91,6 +91,7 @@ public class Enemy: MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        Debug.Log(amount);
         if (isDead) return;
 
         currentHP -= amount;

@@ -80,7 +80,7 @@ public class GearAdditiveController : MonoBehaviour
                 }
                 else
                 {
-                    hoverOverDesc.text = "Shoot the nearest enemy for <color=#C41E3A>" + (5 * (1f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage.";
+                    hoverOverDesc.text = "Shoot the nearest enemy for <color=#C41E3A>" + (5f * (1f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage.";
 
                 }
             }
@@ -92,7 +92,7 @@ public class GearAdditiveController : MonoBehaviour
                 }
                 else
                 {
-                    hoverOverDesc.text = "Attack all enemies in melee range for <color=#C41E3A>" + (5 * (.6f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage.";
+                    hoverOverDesc.text = "Attack all enemies in melee range for <color=#C41E3A>" + ((5f*0.6f) * (1f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage.";
                 }
             }
             else if(a.ability == AbilityName.Skewer)
@@ -103,7 +103,7 @@ public class GearAdditiveController : MonoBehaviour
                 }
                 else
                 {
-                    hoverOverDesc.text = "Attack an enemy in melee range for <color=#C41E3A>" + (5 * (.5f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage, and then heal for 1/4 that.";
+                    hoverOverDesc.text = "Attack an enemy in melee range for <color=#C41E3A>" + ((5f*.5f) * (1f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage, and then heal for 1/4 that.";
                 }
             }
             else if(a.ability == AbilityName.Stagger)
@@ -125,7 +125,7 @@ public class GearAdditiveController : MonoBehaviour
                 }
                 else 
                 {
-                    hoverOverDesc.text = "Shoot the nearest enemy and enemies around it for <color=#C41E3A>" + (5 * (0.4f + (0.1f * (int)a.rarity)) + teeth / 10f).ToString() + "</color> damage.";
+                    hoverOverDesc.text = "Shoot the nearest enemy and enemies around it for <color=#C41E3A>" + ((5f*.4f) * (1f + (0.1f * (int)a.rarity)) + teeth/10f).ToString() + "</color> damage.";
                 }
             }
 
